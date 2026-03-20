@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.rojastopher.com)",
+      "Bash(curl -s \"https://www.rojastopher.com/womens-march-on-dc\")",
+      "Bash(curl -s \"https://www.rojastopher.com/womens-march-on-dc?format=json\")",
+      "Bash(python3 -c \"import sys,json; data=json.load\\(sys.stdin\\); items=data.get\\(''''collection'''',{}\\).get\\(''''items'''',[]\\) or data.get\\(''''items'''',[]\\); [print\\(img.get\\(''''assetUrl'''',''''''''\\)\\) for item in items for img in \\(item.get\\(''''items'''',[]\\) or [item]\\)]\")",
+      "Bash(curl -s https://www.rojastopher.com/womens-march-on-dc?format=json-pretty)",
+      "Bash(python3 -m json.tool)",
+      "Bash(curl -v -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36 \\(KHTML, like Gecko\\) Chrome/120.0.0.0 Safari/537.36\" \"https://www.rojastopher.com/womens-march-on-dc\")",
+      "Bash(curl -sL -A \"Mozilla/5.0 \\(Windows NT 10.0; Win64; x64\\) AppleWebKit/537.36\" \"https://rojastopher.com/womens-march-on-dc\")",
+      "Bash(python3 -c \":*)",
+      "Bash(python3 -:*)"
+    ]
+  }
+}

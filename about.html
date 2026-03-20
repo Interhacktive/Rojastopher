@@ -1,0 +1,573 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About — Rojastopher</title>
+  <meta name="description" content="About Rojastopher — documentary photographer documenting protest and political action since 2008." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sidebar-w: 220px;
+      --black: #0a0a0a;
+      --surface: #111;
+      --border: #1e1e1e;
+      --text: #e0e0e0;
+      --muted: #666;
+      --accent: #c8a96e;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-serif: Georgia, 'Times New Roman', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: var(--font-sans);
+    }
+
+    /* ── SIDEBAR ─────────────────────────────────────────────── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      background: var(--black);
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 24px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo a {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 20px;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      display: block;
+    }
+
+    .sidebar-logo span {
+      display: block;
+      font-family: var(--font-sans);
+      font-style: normal;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      padding: 16px 0;
+    }
+
+    .sidebar-nav::-webkit-scrollbar { display: none; }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 9px 24px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.2s, background 0.15s;
+      border-left: 2px solid transparent;
+    }
+
+    .sidebar-nav a:hover { color: var(--text); background: rgba(255,255,255,0.03); }
+
+    .sidebar-nav .nav-num {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer {
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer a {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--accent);
+      text-decoration: none;
+      padding: 6px 0;
+    }
+
+    /* ── MAIN ─────────────────────────────────────────────────── */
+    .main {
+      margin-left: var(--sidebar-w);
+      min-height: 100vh;
+    }
+
+    /* ── HERO BANNER ──────────────────────────────────────────── */
+    .about-hero {
+      height: 52vh;
+      min-height: 320px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: flex-end;
+    }
+
+    .about-hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('images/george-floyd-protests/IMG_5917.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      filter: brightness(0.4);
+    }
+
+    .about-hero-content {
+      position: relative;
+      z-index: 1;
+      padding: 0 64px 48px;
+    }
+
+    .about-hero-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .about-hero-title {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: normal;
+      font-size: clamp(32px, 5vw, 60px);
+      color: #fff;
+      line-height: 1.1;
+    }
+
+    /* ── CONTENT ──────────────────────────────────────────────── */
+    .about-body {
+      max-width: 900px;
+      padding: 72px 64px 96px;
+    }
+
+    /* Statement */
+    .about-statement {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: clamp(20px, 2.5vw, 28px);
+      line-height: 1.55;
+      color: var(--text);
+      border-left: 3px solid var(--accent);
+      padding-left: 28px;
+      margin-bottom: 64px;
+    }
+
+    /* Bio */
+    .about-section-label {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 20px;
+    }
+
+    .about-bio p {
+      font-size: 15px;
+      line-height: 1.85;
+      color: rgba(224,224,224,0.8);
+      margin-bottom: 20px;
+      max-width: 620px;
+    }
+
+    .about-bio p:last-child { margin-bottom: 0; }
+
+    /* Divider */
+    .about-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 64px 0;
+    }
+
+    /* Timeline */
+    .about-timeline {
+      display: grid;
+      grid-template-columns: 100px 1fr;
+      gap: 0;
+    }
+
+    .timeline-row {
+      display: contents;
+    }
+
+    .timeline-year {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 22px;
+      color: var(--accent);
+      padding: 16px 32px 16px 0;
+      border-right: 1px solid var(--border);
+      line-height: 1.3;
+    }
+
+    .timeline-entries {
+      padding: 16px 0 16px 32px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .timeline-row:last-child .timeline-entries { border-bottom: none; }
+    .timeline-row:last-child .timeline-year { border-bottom: none; }
+
+    .timeline-entry {
+      margin-bottom: 10px;
+    }
+
+    .timeline-entry:last-child { margin-bottom: 0; }
+
+    .timeline-entry-title {
+      font-size: 13px;
+      color: var(--text);
+      font-weight: 500;
+      letter-spacing: 0.02em;
+    }
+
+    .timeline-entry-loc {
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 2px;
+      letter-spacing: 0.05em;
+    }
+
+    /* Stats */
+    .about-stats {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-top: 64px;
+    }
+
+    .stat-block {
+      background: var(--black);
+      padding: 32px 28px;
+    }
+
+    .stat-n {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 42px;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .stat-l {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 8px;
+    }
+
+    /* Contact */
+    .about-contact {
+      margin-top: 64px;
+    }
+
+    .about-contact a {
+      display: inline-block;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(200,169,110,0.3);
+      padding-bottom: 2px;
+      margin-right: 32px;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .about-contact a:hover { border-color: var(--accent); }
+
+    /* Back link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 24px 64px;
+      border-top: 1px solid var(--border);
+      transition: color 0.2s;
+      width: 100%;
+    }
+
+    .back-link:hover { color: var(--accent); }
+
+    /* ── MOBILE ───────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      :root { --sidebar-w: 0px; }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .sidebar-logo {
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+        padding: 14px 18px;
+        flex-shrink: 0;
+      }
+
+      .sidebar-logo span { display: none; }
+      .sidebar-logo a { font-size: 17px; }
+
+      .sidebar-nav {
+        flex: 1;
+        overflow-x: auto;
+        overflow-y: hidden;
+        display: flex;
+        padding: 0;
+        min-width: 0;
+      }
+
+      .sidebar-nav ul {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        list-style: none;
+        padding-right: 16px;
+      }
+
+      .sidebar-nav a {
+        padding: 0 14px;
+        height: 52px;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        flex-shrink: 0;
+        font-size: 10px;
+      }
+
+      .sidebar-nav .nav-num { display: none; }
+      .sidebar-footer { display: none; }
+
+      .main { margin-left: 0; padding-top: 52px; }
+
+      .about-hero { height: 40vh; min-height: 240px; }
+      .about-hero-content { padding: 0 24px 36px; }
+
+      .about-body { padding: 48px 24px 72px; }
+
+      .about-timeline {
+        grid-template-columns: 72px 1fr;
+      }
+
+      .timeline-year { font-size: 18px; padding-right: 20px; }
+      .timeline-entries { padding-left: 20px; }
+
+      .about-stats { grid-template-columns: repeat(2, 1fr); }
+
+      .stat-n { font-size: 32px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar">
+  <div class="sidebar-logo">
+    <a href="index.html">Rojastopher</a>
+    <span>Documentary Photography</span>
+  </div>
+  <nav class="sidebar-nav">
+    <ul>
+      <li><a href="index.html#womens-march-on-dc"><span class="nav-num">01</span>Women's March D.C.</a></li>
+      <li><a href="index.html#inaugertion-day"><span class="nav-num">02</span>Inauguration Day</a></li>
+      <li><a href="index.html#muslim-ban-protest"><span class="nav-num">03</span>Muslim Ban — SeaTac</a></li>
+      <li><a href="index.html#muslim-ban-protest-westlake-center"><span class="nav-num">04</span>Muslim Ban — Westlake</a></li>
+      <li><a href="index.html#occupy-wall-street"><span class="nav-num">05</span>Occupy Wall Street</a></li>
+      <li><a href="index.html#iraq"><span class="nav-num">06</span>Iraq</a></li>
+      <li><a href="index.html#dnc-2008"><span class="nav-num">07</span>DNC 2008</a></li>
+      <li><a href="index.html#george-floyd-protests"><span class="nav-num">08</span>George Floyd</a></li>
+      <li><a href="index.html#2025"><span class="nav-num">09</span>2025</a></li>
+      <li><a href="index.html#handmaids"><span class="nav-num">10</span>Handmaids</a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="about.html">About the Photographer</a>
+  </div>
+</aside>
+
+<div class="main">
+
+  <!-- HERO -->
+  <div class="about-hero">
+    <div class="about-hero-bg"></div>
+    <div class="about-hero-content">
+      <p class="about-hero-eyebrow">About the Photographer</p>
+      <h1 class="about-hero-title">Rojastopher</h1>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="about-body">
+
+    <blockquote class="about-statement">
+      "Photography is the act of witnessing. To be present with a camera is a commitment — to the people in the frame, to the moment, and to everyone who wasn't there."
+    </blockquote>
+
+    <div class="about-bio">
+      <p class="about-section-label">Biography</p>
+      <p>
+        Rojastopher is a Seattle-based documentary photographer whose work spans nearly two decades of American political life. Beginning with anti-war demonstrations in 2008, the work has grown into an ongoing archive of civic resistance — capturing the faces, signs, and silences of people demanding to be heard.
+      </p>
+      <p>
+        Working primarily with a single camera and natural light, these photographs prioritize presence over production. The images are made in real time, in real crowds, with no staging and no second chances. They are records of what happened.
+      </p>
+      <p>
+        From the streets of New York during Occupy Wall Street to the arrivals hall of Seattle-Tacoma Airport on the night of the Muslim ban, from the National Mall on Inauguration Day to the plywood-covered downtown Seattle blocks of the George Floyd protests — this body of work insists that ordinary people, in extraordinary moments, deserve to be remembered.
+      </p>
+    </div>
+
+    <hr class="about-divider" />
+
+    <p class="about-section-label">Work — Selected Series</p>
+
+    <div class="about-timeline">
+
+      <div class="timeline-row">
+        <div class="timeline-year">2008</div>
+        <div class="timeline-entries">
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">DNC 2008</div>
+            <div class="timeline-entry-loc">Denver, Colorado</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">Iraq</div>
+            <div class="timeline-entry-loc">Anti-war demonstrations</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="timeline-year">2011</div>
+        <div class="timeline-entries">
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">Occupy Wall Street</div>
+            <div class="timeline-entry-loc">New York City, New York</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="timeline-year">2017</div>
+        <div class="timeline-entries">
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">Inauguration Day</div>
+            <div class="timeline-entry-loc">Washington, D.C.</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">Women's March on D.C.</div>
+            <div class="timeline-entry-loc">Washington, D.C. — Jan 21</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">Muslim Ban Protest</div>
+            <div class="timeline-entry-loc">Seattle-Tacoma Airport — Jan 29</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">Muslim Ban Protest</div>
+            <div class="timeline-entry-loc">Westlake Center, Seattle</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="timeline-year">2020</div>
+        <div class="timeline-entries">
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">George Floyd Protests</div>
+            <div class="timeline-entry-loc">Seattle, Washington</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="timeline-year">2024–25</div>
+        <div class="timeline-entries">
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">Handmaids</div>
+            <div class="timeline-entry-loc">Seattle, Washington</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title">2025</div>
+            <div class="timeline-entry-loc">Ongoing</div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /timeline -->
+
+    <div class="about-stats">
+      <div class="stat-block">
+        <div class="stat-n">117</div>
+        <div class="stat-l">Photographs</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-n">10</div>
+        <div class="stat-l">Series</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-n">17</div>
+        <div class="stat-l">Years</div>
+      </div>
+      <div class="stat-block">
+        <div class="stat-n">6+</div>
+        <div class="stat-l">Cities</div>
+      </div>
+    </div>
+
+    <div class="about-contact">
+      <p class="about-section-label">Contact</p>
+      <a href="mailto:hello@rojastopher.com">hello@rojastopher.com</a>
+      <a href="https://www.rojastopher.com" target="_blank" rel="noopener">rojastopher.com</a>
+    </div>
+
+  </div><!-- /about-body -->
+
+  <a href="index.html" class="back-link">&#8592;&nbsp;&nbsp;Back to Galleries</a>
+
+</div><!-- /main -->
+
+</body>
+</html>
