@@ -108,6 +108,9 @@
       border-top: 1px solid var(--border);
       padding: 16px 24px;
       flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
 
     .sidebar-footer a {
@@ -119,6 +122,18 @@
       text-decoration: none;
       padding: 6px 0;
     }
+
+    .ig-link {
+      color: var(--muted);
+      transition: color 0.2s;
+      flex-shrink: 0;
+      line-height: 1;
+      padding: 6px 0;
+      letter-spacing: 0;
+    }
+
+    .ig-link:hover { color: var(--accent); }
+    .ig-link svg { display: block; width: 16px; height: 16px; }
 
     /* ── MAIN ─────────────────────────────────────────────────── */
     .main {
@@ -247,6 +262,16 @@
 
     .timeline-entry:last-child { margin-bottom: 0; }
 
+    .timeline-entry-title a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .timeline-entry-title a:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
     .timeline-entry-title {
       font-size: 13px;
       color: var(--text);
@@ -259,37 +284,6 @@
       color: var(--muted);
       margin-top: 2px;
       letter-spacing: 0.05em;
-    }
-
-    /* Stats */
-    .about-stats {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      margin-top: 64px;
-    }
-
-    .stat-block {
-      background: var(--black);
-      padding: 32px 28px;
-    }
-
-    .stat-n {
-      font-family: var(--font-serif);
-      font-style: italic;
-      font-size: 42px;
-      color: var(--text);
-      line-height: 1;
-    }
-
-    .stat-l {
-      font-size: 9px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin-top: 8px;
     }
 
     /* Contact */
@@ -396,9 +390,6 @@
       .timeline-year { font-size: 18px; padding-right: 20px; }
       .timeline-entries { padding-left: 20px; }
 
-      .about-stats { grid-template-columns: repeat(2, 1fr); }
-
-      .stat-n { font-size: 32px; }
     }
   </style>
 </head>
@@ -412,21 +403,21 @@
   </div>
   <nav class="sidebar-nav">
     <ul>
-      <li><a href="index.html#freepalestine"><span class="nav-num">01</span>Free Palestine</a></li>
-      <li><a href="index.html#nokings1"><span class="nav-num">02</span>No Kings Seattle</a></li>
-      <li><a href="index.html#student-rally"><span class="nav-num">03</span>Student Rally</a></li>
+      <li><a href="index.html#student-rally"><span class="nav-num">01</span>Student Rally</a></li>
+      <li><a href="index.html#iceout-federal"><span class="nav-num">02</span>ICE Out — Federal Bldg</a></li>
+      <li><a href="index.html#mn-protest"><span class="nav-num">03</span>Minneapolis ICE OUT</a></li>
       <li><a href="index.html#iceoutnow"><span class="nav-num">04</span>ICE Out Now</a></li>
-      <li><a href="index.html#iceout-federal"><span class="nav-num">05</span>ICE Out — Federal Bldg</a></li>
-      <li><a href="index.html#mn-protest"><span class="nav-num">06</span>Minneapolis ICE OUT</a></li>
-      <li><a href="index.html#bovino"><span class="nav-num">07</span>Greg Bovino</a></li>
-      <li><a href="index.html#jake-lang"><span class="nav-num">08</span>Jake Lang</a></li>
-      <li><a href="index.html#2025"><span class="nav-num">09</span>2025</a></li>
-      <li><a href="index.html#handmaids"><span class="nav-num">10</span>Handmaids</a></li>
-      <li><a href="index.html#george-floyd-protests"><span class="nav-num">11</span>George Floyd</a></li>
-      <li><a href="index.html#womens-march-on-dc"><span class="nav-num">12</span>Women's March D.C.</a></li>
-      <li><a href="index.html#inaugertion-day"><span class="nav-num">13</span>Inauguration Day</a></li>
-      <li><a href="index.html#muslim-ban-protest"><span class="nav-num">14</span>Muslim Ban — SeaTac</a></li>
-      <li><a href="index.html#muslim-ban-protest-westlake-center"><span class="nav-num">15</span>Muslim Ban — Westlake</a></li>
+      <li><a href="index.html#bovino"><span class="nav-num">05</span>Greg Bovino</a></li>
+      <li><a href="index.html#jake-lang"><span class="nav-num">06</span>Jake Lang</a></li>
+      <li><a href="index.html#handmaids"><span class="nav-num">07</span>Handmaids</a></li>
+      <li><a href="index.html#freepalestine"><span class="nav-num">08</span>Free Palestine</a></li>
+      <li><a href="index.html#nokings1"><span class="nav-num">09</span>No Kings Seattle</a></li>
+      <li><a href="index.html#marchonwashington"><span class="nav-num">10</span>March on Washington</a></li>
+      <li><a href="index.html#j25"><span class="nav-num">11</span>J25</a></li>
+      <li><a href="index.html#george-floyd-protests"><span class="nav-num">12</span>George Floyd</a></li>
+      <li><a href="index.html#muslim-ban-protest"><span class="nav-num">13</span>Muslim Ban — SeaTac</a></li>
+      <li><a href="index.html#womens-march-on-dc"><span class="nav-num">14</span>Women's March D.C.</a></li>
+      <li><a href="index.html#inaugertion-day"><span class="nav-num">15</span>Inauguration Day</a></li>
       <li><a href="index.html#occupy-wall-street"><span class="nav-num">16</span>Occupy Wall Street</a></li>
       <li><a href="index.html#dnc-2008"><span class="nav-num">17</span>DNC 2008</a></li>
       <li><a href="index.html#iraq"><span class="nav-num">18</span>Iraq</a></li>
@@ -434,6 +425,15 @@
   </nav>
   <div class="sidebar-footer">
     <a href="about.html">About the Photographer</a>
+    <a href="https://www.instagram.com/rojastopher/" target="_blank" rel="noopener"
+       class="ig-link" aria-label="Instagram @rojastopher">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+        <circle cx="12" cy="12" r="4.5"/>
+        <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+      </svg>
+    </a>
   </div>
 </aside>
 
@@ -475,47 +475,49 @@
     <div class="about-timeline">
 
       <div class="timeline-row">
-        <div class="timeline-year">2008</div>
+        <div class="timeline-year">2026</div>
         <div class="timeline-entries">
           <div class="timeline-entry">
-            <div class="timeline-entry-title">DNC 2008</div>
-            <div class="timeline-entry-loc">Denver, Colorado</div>
+            <div class="timeline-entry-title"><a href="index.html#student-rally">Student Rally</a></div>
+            <div class="timeline-entry-loc">Seattle City Hall — Feb 5</div>
           </div>
           <div class="timeline-entry">
-            <div class="timeline-entry-title">Iraq</div>
-            <div class="timeline-entry-loc">Anti-war demonstrations</div>
+            <div class="timeline-entry-title"><a href="index.html#iceout-federal">ICE Out — Federal Building</a></div>
+            <div class="timeline-entry-loc">Seattle, Washington — Jan 26</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#mn-protest">Minneapolis ICE OUT</a></div>
+            <div class="timeline-entry-loc">Minneapolis, Minnesota — Jan 24</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#iceoutnow">ICE Out Now</a></div>
+            <div class="timeline-entry-loc">Minneapolis, Minnesota — Jan 24</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#bovino">Greg Bovino</a></div>
+            <div class="timeline-entry-loc">Minneapolis, Minnesota — Jan 21</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#jake-lang">Jake Lang</a></div>
+            <div class="timeline-entry-loc">Minneapolis, Minnesota — Jan 18</div>
           </div>
         </div>
       </div>
 
       <div class="timeline-row">
-        <div class="timeline-year">2011</div>
+        <div class="timeline-year">2025</div>
         <div class="timeline-entries">
           <div class="timeline-entry">
-            <div class="timeline-entry-title">Occupy Wall Street</div>
-            <div class="timeline-entry-loc">New York City, New York</div>
-          </div>
-        </div>
-      </div>
-
-      <div class="timeline-row">
-        <div class="timeline-year">2017</div>
-        <div class="timeline-entries">
-          <div class="timeline-entry">
-            <div class="timeline-entry-title">Inauguration Day</div>
-            <div class="timeline-entry-loc">Washington, D.C.</div>
+            <div class="timeline-entry-title"><a href="index.html#handmaids">Handmaids</a></div>
+            <div class="timeline-entry-loc">Seattle, Washington — Sep 7</div>
           </div>
           <div class="timeline-entry">
-            <div class="timeline-entry-title">Women's March on D.C.</div>
-            <div class="timeline-entry-loc">Washington, D.C. — Jan 21</div>
+            <div class="timeline-entry-title"><a href="index.html#freepalestine">Free Palestine</a></div>
+            <div class="timeline-entry-loc">Seattle, Washington — Aug 17</div>
           </div>
           <div class="timeline-entry">
-            <div class="timeline-entry-title">Muslim Ban Protest</div>
-            <div class="timeline-entry-loc">Seattle-Tacoma Airport — Jan 29</div>
-          </div>
-          <div class="timeline-entry">
-            <div class="timeline-entry-title">Muslim Ban Protest</div>
-            <div class="timeline-entry-loc">Westlake Center, Seattle</div>
+            <div class="timeline-entry-title"><a href="index.html#nokings1">No Kings Seattle</a></div>
+            <div class="timeline-entry-loc">Seattle, Washington — Jun 14</div>
           </div>
         </div>
       </div>
@@ -524,46 +526,63 @@
         <div class="timeline-year">2020</div>
         <div class="timeline-entries">
           <div class="timeline-entry">
-            <div class="timeline-entry-title">George Floyd Protests</div>
-            <div class="timeline-entry-loc">Seattle, Washington</div>
+            <div class="timeline-entry-title"><a href="index.html#marchonwashington">March on Washington</a></div>
+            <div class="timeline-entry-loc">Washington, D.C. — Aug 28</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#j25">J25</a></div>
+            <div class="timeline-entry-loc">Seattle, Washington — Jul 25</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#george-floyd-protests">George Floyd Protests</a></div>
+            <div class="timeline-entry-loc">Seattle, Washington — May 30</div>
           </div>
         </div>
       </div>
 
       <div class="timeline-row">
-        <div class="timeline-year">2024–25</div>
+        <div class="timeline-year">2017</div>
         <div class="timeline-entries">
           <div class="timeline-entry">
-            <div class="timeline-entry-title">Handmaids</div>
-            <div class="timeline-entry-loc">Seattle, Washington</div>
+            <div class="timeline-entry-title"><a href="index.html#muslim-ban-protest">Muslim Ban Protest</a></div>
+            <div class="timeline-entry-loc">Seattle-Tacoma Airport — Jan 29</div>
           </div>
           <div class="timeline-entry">
-            <div class="timeline-entry-title">2025</div>
-            <div class="timeline-entry-loc">Ongoing</div>
+            <div class="timeline-entry-title"><a href="index.html#womens-march-on-dc">Women's March on D.C.</a></div>
+            <div class="timeline-entry-loc">Washington, D.C. — Jan 21</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#inaugertion-day">Inauguration Day</a></div>
+            <div class="timeline-entry-loc">Washington, D.C. — Jan 20</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="timeline-year">2011</div>
+        <div class="timeline-entries">
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#occupy-wall-street">Occupy Wall Street</a></div>
+            <div class="timeline-entry-loc">New York City, New York — Oct 22</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="timeline-row">
+        <div class="timeline-year">2008</div>
+        <div class="timeline-entries">
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#dnc-2008">DNC 2008</a></div>
+            <div class="timeline-entry-loc">Denver, Colorado — Aug 28</div>
+          </div>
+          <div class="timeline-entry">
+            <div class="timeline-entry-title"><a href="index.html#iraq">Iraq</a></div>
+            <div class="timeline-entry-loc">Baghdad, Iraq — Mar 7</div>
           </div>
         </div>
       </div>
 
     </div><!-- /timeline -->
-
-    <div class="about-stats">
-      <div class="stat-block">
-        <div class="stat-n">117</div>
-        <div class="stat-l">Photographs</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-n">10</div>
-        <div class="stat-l">Series</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-n">17</div>
-        <div class="stat-l">Years</div>
-      </div>
-      <div class="stat-block">
-        <div class="stat-n">6+</div>
-        <div class="stat-l">Cities</div>
-      </div>
-    </div>
 
     <div class="about-contact">
       <p class="about-section-label">Contact</p>
