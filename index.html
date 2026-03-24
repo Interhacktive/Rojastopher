@@ -289,7 +289,6 @@
       width: auto;
       display: block;
       flex-shrink: 0;
-      cursor: pointer;
       transition: filter 0.35s;
     }
 
@@ -365,72 +364,6 @@
       transition: width 0.05s linear;
     }
 
-    /* ── LIGHTBOX ─────────────────────────────────────────────── */
-    .lightbox {
-      display: none;
-      position: fixed;
-      inset: 0;
-      z-index: 1000;
-      background: rgba(0,0,0,0.97);
-      align-items: center;
-      justify-content: center;
-    }
-
-    .lightbox.open { display: flex; }
-
-    .lightbox img {
-      max-width: calc(100vw - 120px);
-      max-height: 92vh;
-      object-fit: contain;
-      display: block;
-      cursor: e-resize;
-    }
-
-    .lb-btn {
-      position: fixed;
-      top: 50%;
-      transform: translateY(-50%);
-      background: none;
-      border: none;
-      color: rgba(255,255,255,0.3);
-      font-size: 40px;
-      cursor: pointer;
-      padding: 20px 28px;
-      line-height: 1;
-      transition: color 0.2s;
-      z-index: 1001;
-    }
-
-    .lb-btn:hover { color: #fff; }
-    #lbPrev { left: 0; }
-    #lbNext { right: 0; }
-
-    #lbClose {
-      position: fixed;
-      top: 20px; right: 24px;
-      background: none; border: none;
-      color: rgba(255,255,255,0.4);
-      font-size: 26px;
-      cursor: pointer;
-      z-index: 1001;
-      line-height: 1;
-      transition: color 0.2s;
-    }
-
-    #lbClose:hover { color: #fff; }
-
-    .lb-info {
-      position: fixed;
-      bottom: 20px;
-      left: 0; right: 0;
-      text-align: center;
-      font-size: 10px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
-      color: var(--muted);
-      z-index: 1001;
-    }
-
     /* ── FOOTER ───────────────────────────────────────────────── */
     footer {
       margin-left: 0;
@@ -458,49 +391,6 @@
     }
 
     footer a:hover { color: var(--accent); }
-
-    /* ── GALLERY NAV ZONES ────────────────────────────────────── */
-    .gallery-nav-zone {
-      position: absolute;
-      top: 0;
-      width: 50%;
-      height: calc(100% - var(--info-h));
-      z-index: 5;
-    }
-
-    .gallery-nav-left {
-      left: 0;
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolyline points='15,4 7,12 15,20' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none' filter='url(%23s)'/%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='0.8' flood-color='%23000' flood-opacity='0.9'/%3E%3C/filter%3E%3C/svg%3E") 12 12, w-resize;
-    }
-
-    .gallery-nav-right {
-      right: 0;
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolyline points='9,4 17,12 9,20' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none' filter='url(%23s)'/%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='0.8' flood-color='%23000' flood-opacity='0.9'/%3E%3C/filter%3E%3C/svg%3E") 12 12, e-resize;
-    }
-
-    /* ── PHOTOSET TOP/BOTTOM NAV ZONES ───────────────────────── */
-    .photoset-nav-zone {
-      position: fixed;
-      left: var(--sidebar-w);
-      right: 0;
-      height: 80px;
-      z-index: 20;
-    }
-
-    .photoset-nav-top    { top: 0; }
-    .photoset-nav-bottom { bottom: 0; }
-
-    .photoset-nav-top {
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolyline points='5,15 12,8 19,15' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none' filter='url(%23s)'/%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='0.8' flood-color='%23000' flood-opacity='0.9'/%3E%3C/filter%3E%3C/svg%3E") 12 12, n-resize;
-    }
-
-    .photoset-nav-bottom {
-      cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolyline points='5,9 12,16 19,9' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none' filter='url(%23s)'/%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='0.8' flood-color='%23000' flood-opacity='0.9'/%3E%3C/filter%3E%3C/svg%3E") 12 12, s-resize;
-    }
-
-    @media (max-width: 768px) {
-      .photoset-nav-zone { display: none; }
-    }
 
     /* ── IMG FADE-IN ──────────────────────────────────────────── */
     .gallery-track img {
@@ -1137,17 +1027,6 @@
 
 </div><!-- /main -->
 
-<div class="photoset-nav-zone photoset-nav-top" id="photosetNavTop"></div>
-<div class="photoset-nav-zone photoset-nav-bottom" id="photosetNavBottom"></div>
-
-<!-- LIGHTBOX -->
-<div class="lightbox" id="lightbox">
-  <button id="lbClose" aria-label="Close">×</button>
-  <button class="lb-btn" id="lbPrev">‹</button>
-  <img id="lbImg" src="" alt="">
-  <button class="lb-btn" id="lbNext">›</button>
-  <div class="lb-info" id="lbInfo"></div>
-</div>
 
 <script>
   // ── CONSTANTS ───────────────────────────────────────────────────
@@ -1215,13 +1094,8 @@
     setHeight();
     window.addEventListener('resize', setHeight);
 
-    // Attach lightbox clicks + fade-in on load
-    const imgEls  = track.querySelectorAll('img');
-    const title   = track.dataset.title;
-    const imgSrcs = Array.from(imgEls).map(i => i.src);
-
-    imgEls.forEach((img, idx) => {
-      img.addEventListener('click', () => openLightbox(imgSrcs, idx, title));
+    // Fade-in on load
+    track.querySelectorAll('img').forEach(img => {
       if (img.complete) img.classList.add('loaded');
       else img.addEventListener('load', () => img.classList.add('loaded'));
     });
@@ -1229,7 +1103,7 @@
     galleries.push({ outer, track, progBar, counter, numImgs });
   });
 
-  // ── PHOTOSET TOP/BOTTOM NAV ──────────────────────────────────────
+  // ── GALLERY HELPERS ──────────────────────────────────────────────
   function currentGalleryIndex() {
     const mid = window.scrollY + window.innerHeight / 2;
     for (let i = 0; i < galleries.length; i++) {
@@ -1239,17 +1113,30 @@
     return -1;
   }
 
-  document.getElementById('photosetNavTop').addEventListener('click', () => {
+  function navigateAlbum(dir) {
     const i = currentGalleryIndex();
-    const target = i <= 0 ? galleries[0] : galleries[i - 1];
+    const target = dir < 0
+      ? (i <= 0 ? galleries[0] : galleries[i - 1])
+      : (i < 0 ? galleries[0] : galleries[Math.min(galleries.length - 1, i + 1)]);
     if (target) window.scrollTo({ top: target.outer.offsetTop, behavior: 'smooth' });
-  });
+  }
 
-  document.getElementById('photosetNavBottom').addEventListener('click', () => {
+  function navigateImage(dir) {
     const i = currentGalleryIndex();
-    const target = i < 0 ? galleries[0] : galleries[i + 1];
-    if (target) window.scrollTo({ top: target.outer.offsetTop, behavior: 'smooth' });
-  });
+    if (i < 0) { if (dir > 0) navigateAlbum(1); return; }
+    const { outer, numImgs } = galleries[i];
+    const sy = window.scrollY;
+    const vh = window.innerHeight;
+    const scrollRange = outer.offsetHeight - vh;
+    if (scrollRange <= 0) return;
+    const ratio    = Math.max(0, Math.min(1, (sy - outer.offsetTop) / scrollRange));
+    const curImg   = Math.floor(ratio * numImgs);
+    const nextImg  = curImg + dir;
+    if (nextImg < 0) { navigateAlbum(-1); return; }
+    if (nextImg >= numImgs) { navigateAlbum(1); return; }
+    const targetY  = outer.offsetTop + (nextImg / numImgs) * scrollRange;
+    window.scrollTo({ top: targetY, behavior: 'smooth' });
+  }
 
   // ── SCROLL DRIVEN HORIZONTAL PAN ────────────────────────────────
   let rafPending = false;
@@ -1372,103 +1259,74 @@
 
   heroTimer = setInterval(() => goTo(current + 1), 5500);
 
-  // ── LIGHTBOX ─────────────────────────────────────────────────────
-  let lbImgs = [], lbIdx = 0;
+  // ── CURSOR ZONES & CLICK NAVIGATION ─────────────────────────────
+  const ZONE_H = 120; // px — height of top/bottom album-nav zones
 
-  function openLightbox(imgs, idx, title) {
-    lbImgs = imgs;
-    lbIdx  = idx;
-    showLb(title);
-    document.getElementById('lightbox').classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
+  const cursorSVG = {
+    up:    "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolyline points='5,15 12,8 19,15' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none' filter='url(%23s)'/%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='0.8' flood-color='%23000' flood-opacity='0.9'/%3E%3C/filter%3E%3C/svg%3E\") 12 12, n-resize",
+    down:  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolyline points='5,9 12,16 19,9' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none' filter='url(%23s)'/%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='0.8' flood-color='%23000' flood-opacity='0.9'/%3E%3C/filter%3E%3C/svg%3E\") 12 12, s-resize",
+    left:  "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolyline points='15,4 7,12 15,20' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none' filter='url(%23s)'/%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='0.8' flood-color='%23000' flood-opacity='0.9'/%3E%3C/filter%3E%3C/svg%3E\") 12 12, w-resize",
+    right: "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24'%3E%3Cpolyline points='9,4 17,12 9,20' stroke='%23ffffff' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round' fill='none' filter='url(%23s)'/%3E%3Cfilter id='s'%3E%3CfeDropShadow dx='0' dy='0' stdDeviation='0.8' flood-color='%23000' flood-opacity='0.9'/%3E%3C/filter%3E%3C/svg%3E\") 12 12, e-resize",
+  };
 
-  function showLb(titleOverride) {
-    const img = document.getElementById('lbImg');
-    img.style.opacity = '0';
-    img.src = lbImgs[lbIdx];
-    img.onload = () => { img.style.transition = 'opacity 0.3s'; img.style.opacity = '1'; };
-    document.getElementById('lbInfo').textContent = (lbIdx + 1) + ' / ' + lbImgs.length;
-  }
+  let curZone = 'right';
+  document.body.style.cursor = cursorSVG.right;
 
-  function closeLb() {
-    document.getElementById('lightbox').classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  document.getElementById('lbClose').addEventListener('click', closeLb);
-  document.getElementById('lightbox').addEventListener('click', e => { if (e.target === e.currentTarget) closeLb(); });
-
-  document.getElementById('lbImg').addEventListener('mousemove', e => {
-    e.currentTarget.style.cursor = e.clientX < window.innerWidth / 2 ? 'w-resize' : 'e-resize';
-  });
-
-  document.getElementById('lbImg').addEventListener('click', e => {
-    if (e.clientX < window.innerWidth / 2) {
-      lbIdx = (lbIdx - 1 + lbImgs.length) % lbImgs.length;
-    } else {
-      lbIdx = (lbIdx + 1) % lbImgs.length;
+  document.addEventListener('mousemove', e => {
+    const sw = sidebarW();
+    const x  = e.clientX - sw;
+    const y  = e.clientY;
+    const w  = window.innerWidth - sw;
+    const h  = window.innerHeight;
+    let zone;
+    if (y < ZONE_H)          zone = 'up';
+    else if (y > h - ZONE_H) zone = 'down';
+    else if (x < w * 0.5)   zone = 'left';
+    else                     zone = 'right';
+    if (zone !== curZone) {
+      curZone = zone;
+      document.body.style.cursor = cursorSVG[zone];
     }
-    showLb();
   });
 
-  document.getElementById('lbPrev').addEventListener('click', () => {
-    lbIdx = (lbIdx - 1 + lbImgs.length) % lbImgs.length;
-    showLb();
+  document.addEventListener('mouseleave', () => { document.body.style.cursor = ''; });
+
+  document.addEventListener('click', e => {
+    if (e.target.closest('.sidebar, .hero-dot, footer')) return;
+    if (curZone === 'up')        navigateAlbum(-1);
+    else if (curZone === 'down') navigateAlbum(+1);
+    else if (curZone === 'left') navigateImage(-1);
+    else                         navigateImage(+1);
   });
 
-  document.getElementById('lbNext').addEventListener('click', () => {
-    lbIdx = (lbIdx + 1) % lbImgs.length;
-    showLb();
-  });
-
+  // ── KEYBOARD ─────────────────────────────────────────────────────
   document.addEventListener('keydown', e => {
-    if (!document.getElementById('lightbox').classList.contains('open')) return;
-    if (e.key === 'Escape')     closeLb();
-    if (e.key === 'ArrowLeft')  { lbIdx = (lbIdx - 1 + lbImgs.length) % lbImgs.length; showLb(); }
-    if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbImgs.length; showLb(); }
+    if (e.key === 'ArrowLeft')  navigateImage(-1);
+    if (e.key === 'ArrowRight') navigateImage(+1);
+    if (e.key === 'ArrowUp')    { e.preventDefault(); navigateAlbum(-1); }
+    if (e.key === 'ArrowDown')  { e.preventDefault(); navigateAlbum(+1); }
   });
 
-  // Mobile horizontal swipe to switch photosets
-  let _tx0 = 0, _ty0 = 0, _swipeH = false;
+  // ── TOUCH SWIPE ──────────────────────────────────────────────────
+  let _tx0 = 0, _ty0 = 0, _swipeDir = null;
   document.addEventListener('touchstart', e => {
     _tx0 = e.touches[0].clientX;
     _ty0 = e.touches[0].clientY;
-    _swipeH = false;
+    _swipeDir = null;
   }, { passive: true });
   document.addEventListener('touchmove', e => {
-    if (_swipeH) return;
+    if (_swipeDir) return;
     const dx = Math.abs(e.touches[0].clientX - _tx0);
     const dy = Math.abs(e.touches[0].clientY - _ty0);
-    if (dx > 10 && dx > dy * 1.5) _swipeH = true;
+    if (dx > 10 || dy > 10) _swipeDir = dx > dy ? 'h' : 'v';
   }, { passive: true });
   document.addEventListener('touchend', e => {
-    if (!_swipeH) return;
+    if (!_swipeDir) return;
     const dx = e.changedTouches[0].clientX - _tx0;
-    if (Math.abs(dx) < 40) { _swipeH = false; return; }
-    const i = currentGalleryIndex();
-    if (dx < 0) {
-      const next = i < 0 ? galleries[0] : galleries[i + 1];
-      if (next) window.scrollTo({ top: next.outer.offsetTop, behavior: 'smooth' });
-    } else {
-      const prev = i <= 0 ? galleries[0] : galleries[i - 1];
-      if (prev) window.scrollTo({ top: prev.outer.offsetTop, behavior: 'smooth' });
-    }
-    _swipeH = false;
+    const dy = e.changedTouches[0].clientY - _ty0;
+    if (_swipeDir === 'h' && Math.abs(dx) > 40) navigateImage(dx < 0 ? 1 : -1);
+    if (_swipeDir === 'v' && Math.abs(dy) > 60) navigateAlbum(dy < 0 ? 1 : -1);
+    _swipeDir = null;
   }, { passive: true });
-
-  // Touch swipe on lightbox
-  let tx0 = 0;
-  const lbEl = document.getElementById('lightbox');
-  lbEl.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
-  lbEl.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - tx0;
-    if (Math.abs(dx) > 50) {
-      lbIdx = dx < 0
-        ? (lbIdx + 1) % lbImgs.length
-        : (lbIdx - 1 + lbImgs.length) % lbImgs.length;
-      showLb();
-    }
-  });
 </script>
 </body></html>
