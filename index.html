@@ -1130,7 +1130,7 @@
     const scrollRange = outer.offsetHeight - vh;
     if (scrollRange <= 0) return;
     const ratio    = Math.max(0, Math.min(1, (sy - outer.offsetTop) / scrollRange));
-    const curImg   = Math.floor(ratio * numImgs);
+    const curImg   = Math.round(ratio * numImgs);
     const nextImg  = curImg + dir;
     if (nextImg < 0) { navigateAlbum(-1); return; }
     if (nextImg >= numImgs) { navigateAlbum(1); return; }
