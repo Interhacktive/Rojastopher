@@ -345,6 +345,34 @@
 
     .photo-item:hover .filename { opacity: 1; }
 
+    /* Set-preview button (star, bottom-left) */
+    .set-preview-btn {
+      position: absolute;
+      bottom: 5px; left: 5px;
+      width: 22px; height: 22px;
+      background: rgba(0,0,0,0.75);
+      border: 1px solid #555;
+      color: var(--accent);
+      font-size: 12px;
+      line-height: 20px;
+      text-align: center;
+      cursor: pointer;
+      opacity: 0;
+      transition: opacity 0.15s, background 0.15s, border-color 0.15s;
+      pointer-events: none;
+    }
+
+    .photo-item:hover .set-preview-btn {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .set-preview-btn:hover {
+      background: rgba(200,169,110,0.2);
+      border-color: var(--accent);
+    }
+
+    /* Remove button (×, bottom-right) */
     .photo-remove {
       position: absolute;
       bottom: 5px; right: 5px;
@@ -411,9 +439,10 @@
   </div>
   <div class="album-list" id="albumList"></div>
   <div class="sidebar-footer">
+    <button class="btn" id="loadBtn">Link to index.html</button>
     <button class="btn" id="resetBtn">Reset Current</button>
-    <button class="btn btn-primary" id="saveBtn">Save to index.html</button>
-    <div class="file-hint" id="fileHint">Opens index.html on first save</div>
+    <button class="btn btn-primary" id="saveBtn" disabled>Save to index.html</button>
+    <div class="file-hint" id="fileHint">Link to index.html to begin</div>
   </div>
 </aside>
 
@@ -425,370 +454,112 @@
   </div>
   <div class="grid-area" id="gridArea">
     <div class="photo-grid" id="photoGrid"></div>
-    <div class="empty-state" id="emptyState">&#8592; Select an album to begin</div>
+    <div class="empty-state" id="emptyState">&#8592; Link to index.html to begin</div>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-// ── GALLERY DATA ──────────────────────────────────────────────────
-const GALLERIES = [
-  {
-    id: 'student-rally', title: 'Student Rally',
-    images: [
-      { src: 'images/Student Rally Seattle City Hall/IMG_4736.jpg', w: 2500, h: 1667 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7380.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7424.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7529.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/IMG_4709.jpg', w: 2500, h: 1667 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7009.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7617.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7645.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7040.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7169.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7308.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7551.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C7707.jpg', w: 2500, h: 3750 },
-      { src: 'images/Student Rally Seattle City Hall/BJ3C6964.jpg', w: 2500, h: 3750 },
-    ]
-  },
-  {
-    id: 'iceout-federal', title: 'ICE Out — Federal Building',
-    images: [
-      { src: 'images/IceOutFederalBuilding/BJ3C6386.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6291-2.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6516.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6301.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6322.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6329.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6370.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6416.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6442.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/BJ3C6581.jpg', w: 2500, h: 3750 },
-      { src: 'images/IceOutFederalBuilding/IMG_4620-2.jpg', w: 2500, h: 1667 },
-    ]
-  },
-  {
-    id: 'mn-protest', title: 'Minneapolis ICE OUT',
-    images: [
-      { src: 'images/MnProtest/IMG_4368.jpg', w: 2500, h: 1667 },
-      { src: 'images/MnProtest/BJ3C5255.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5418.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5016.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C4883.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C4972.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5099.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5168.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5563.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5611.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5678.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5687.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5953.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C5784.jpg', w: 2500, h: 1667 },
-      { src: 'images/MnProtest/BJ3C5841.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/IMG_4451.jpg', w: 2500, h: 1667 },
-      { src: 'images/MnProtest/IMG_4489.jpg', w: 2500, h: 1667 },
-      { src: 'images/MnProtest/IMG_4508.jpg', w: 2500, h: 1667 },
-      { src: 'images/MnProtest/BJ3C5151.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/BJ3C6202.jpg', w: 2500, h: 1667 },
-      { src: 'images/MnProtest/IMG_4542.jpg', w: 2500, h: 3750 },
-      { src: 'images/MnProtest/IMG_4583.jpg', w: 2500, h: 1667 },
-    ]
-  },
-  {
-    id: 'iceoutnow', title: 'ICE Out Now',
-    images: [
-      { src: 'images/iceoutnow/BJ3C6460.jpg', w: 2500, h: 1667 },
-      { src: 'images/iceoutnow/BJ3C6986-Enhanced-NR.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C6479.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C6430.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C6549.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C6812-Enhanced-NR.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C6821-Enhanced-NR.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C6864-Enhanced-NR.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C6903-Enhanced-NR.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C6966-Enhanced-NR.jpg', w: 2500, h: 3750 },
-      { src: 'images/iceoutnow/BJ3C7139-Enhanced-NR.jpg', w: 2500, h: 3750 },
-    ]
-  },
-  {
-    id: 'bovino', title: 'Greg Bovino',
-    images: [
-      { src: 'images/bovino/IMG_4108.jpg', w: 2500, h: 1667 },
-      { src: 'images/bovino/BJ3C4620.jpg', w: 2500, h: 3750 },
-      { src: 'images/bovino/IMG_3942.jpg', w: 2500, h: 1667 },
-      { src: 'images/bovino/BJ3C4051.jpg', w: 2500, h: 3750 },
-      { src: 'images/bovino/BJ3C4199.jpg', w: 2500, h: 1667 },
-      { src: 'images/bovino/BJ3C4550.jpg', w: 2500, h: 3750 },
-      { src: 'images/bovino/IMG_3827.jpg', w: 2500, h: 1667 },
-      { src: 'images/bovino/BJ3C4742.jpg', w: 2500, h: 3750 },
-      { src: 'images/bovino/BJ3C4553.jpg', w: 2500, h: 3750 },
-    ]
-  },
-  {
-    id: 'jake-lang', title: 'Jake Lang',
-    images: [
-      { src: 'images/jakelang/BJ3C1826.jpg', w: 2500, h: 1667 },
-      { src: 'images/jakelang/BJ3C2419.jpg', w: 2500, h: 3750 },
-      { src: 'images/jakelang/BJ3C1987.jpg', w: 2500, h: 1667 },
-      { src: 'images/jakelang/BJ3C2495.jpg', w: 2500, h: 3750 },
-      { src: 'images/jakelang/BJ3C2653.jpg', w: 2500, h: 1667 },
-      { src: 'images/jakelang/BJ3C1455.jpg', w: 2500, h: 3750 },
-      { src: 'images/jakelang/BJ3C1463.jpg', w: 2500, h: 3750 },
-      { src: 'images/jakelang/BJ3C1633.jpg', w: 2500, h: 3750 },
-      { src: 'images/jakelang/BJ3C1930.jpg', w: 2500, h: 1667 },
-      { src: 'images/jakelang/BJ3C2858.jpg', w: 2500, h: 3750 },
-      { src: 'images/jakelang/BJ3C2761.jpg', w: 2500, h: 1667 },
-      { src: 'images/jakelang/BJ3C2768.jpg', w: 2500, h: 1667 },
-      { src: 'images/jakelang/BJ3C1487.jpg', w: 2500, h: 3750 },
-    ]
-  },
-  {
-    id: 'handmaids', title: 'Handmaids',
-    images: [
-      { src: 'images/handmaids/BJ3C6195.jpg', w: 2500, h: 1667 },
-      { src: 'images/handmaids/BJ3C5974.jpg', w: 2500, h: 3750 },
-      { src: 'images/handmaids/BJ3C6028.jpg', w: 2500, h: 3750 },
-      { src: 'images/handmaids/BJ3C6177.jpg', w: 2500, h: 3750 },
-      { src: 'images/handmaids/BJ3C6203.jpg', w: 2149, h: 3223 },
-      { src: 'images/handmaids/BJ3C6138.jpg', w: 2500, h: 3750 },
-      { src: 'images/handmaids/BJ3C6162.jpg', w: 2500, h: 3750 },
-    ]
-  },
-  {
-    id: 'freepalestine', title: 'Free Palestine',
-    images: [
-      { src: 'images/freepalestine/BJ3C9300.jpg', w: 2500, h: 3750 },
-      { src: 'images/freepalestine/BJ3C9349.jpg', w: 2500, h: 3750 },
-      { src: 'images/freepalestine/BJ3C9360.jpg', w: 2500, h: 3750 },
-      { src: 'images/freepalestine/BJ3C9466.jpg', w: 2500, h: 3750 },
-      { src: 'images/freepalestine/BJ3C9497.jpg', w: 2500, h: 3750 },
-      { src: 'images/freepalestine/BJ3C9148.jpg', w: 2500, h: 3750 },
-      { src: 'images/freepalestine/BJ3C9250.jpg', w: 2500, h: 3750 },
-    ]
-  },
-  {
-    id: 'nokings1', title: 'No Kings Seattle',
-    images: [
-      { src: 'images/nokings1/BJ3C7611.jpg', w: 2500, h: 1667 },
-      { src: 'images/nokings1/BJ3C7687.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C7986.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C7952.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C7966.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C7408.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C7814.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C8008.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C8319.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C7885.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C8242.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C7699.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C8130.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C8151.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C8175.jpg', w: 2500, h: 3750 },
-      { src: 'images/nokings1/BJ3C7496.jpg', w: 2500, h: 1667 },
-      { src: 'images/nokings1/BJ3C8487.jpg', w: 2500, h: 3750 },
-    ]
-  },
-  {
-    id: 'marchonwashington', title: 'March on Washington',
-    images: [
-      { src: 'images/marchonwashington/BJ3C6184.jpg', w: 5627, h: 3751 },
-      { src: 'images/marchonwashington/BJ3C6299.jpg', w: 5760, h: 3840 },
-      { src: 'images/marchonwashington/BJ3C7034.jpg', w: 5760, h: 3840 },
-      { src: 'images/marchonwashington/BJ3C7222.jpg', w: 2560, h: 3840 },
-      { src: 'images/marchonwashington/BJ3C7292.jpg', w: 5760, h: 3840 },
-      { src: 'images/marchonwashington/BJ3C7328.jpg', w: 5760, h: 3840 },
-      { src: 'images/marchonwashington/BJ3C7357.jpg', w: 5760, h: 3840 },
-      { src: 'images/marchonwashington/IMG_9222.jpg', w: 5262, h: 3508 },
-      { src: 'images/marchonwashington/IMG_9439.jpg', w: 5472, h: 3648 },
-      { src: 'images/marchonwashington/IMG_9499.jpg', w: 3417, h: 2278 },
-      { src: 'images/marchonwashington/IMG_9609.jpg', w: 4035, h: 2690 },
-    ]
-  },
-  {
-    id: 'j25', title: 'J25',
-    images: [
-      { src: 'images/j25/IMG_7263.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7278.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7284.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7248.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7251.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7255.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7268.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7276.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7277.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7281.JPG', w: 1920, h: 1280 },
-      { src: 'images/j25/IMG_7306.JPG', w: 1920, h: 1280 },
-    ]
-  },
-  {
-    id: 'george-floyd-protests', title: 'George Floyd Protests',
-    images: [
-      { src: 'images/george-floyd-protests/IMG_5762.jpg', w: 4562, h: 3041 },
-      { src: 'images/george-floyd-protests/IMG_5778.jpg', w: 2857, h: 4286 },
-      { src: 'images/george-floyd-protests/IMG_5793.jpg', w: 5472, h: 3648 },
-      { src: 'images/george-floyd-protests/IMG_5798.jpg', w: 5359, h: 3573 },
-      { src: 'images/george-floyd-protests/IMG_5804.jpg', w: 5472, h: 3648 },
-      { src: 'images/george-floyd-protests/IMG_5810.jpg', w: 3648, h: 5472 },
-      { src: 'images/george-floyd-protests/IMG_5841.jpg', w: 5257, h: 3505 },
-      { src: 'images/george-floyd-protests/IMG_5856.jpg', w: 4469, h: 2979 },
-      { src: 'images/george-floyd-protests/IMG_5866.jpg', w: 5472, h: 3648 },
-      { src: 'images/george-floyd-protests/IMG_5875.jpg', w: 5327, h: 3551 },
-      { src: 'images/george-floyd-protests/IMG_5892.jpg', w: 5472, h: 3648 },
-      { src: 'images/george-floyd-protests/IMG_5900.jpg', w: 2795, h: 4192 },
-      { src: 'images/george-floyd-protests/IMG_5918.jpg', w: 5244, h: 3496 },
-      { src: 'images/george-floyd-protests/IMG_5939.jpg', w: 5374, h: 3583 },
-      { src: 'images/george-floyd-protests/IMG_5950.jpg', w: 3503, h: 5254 },
-      { src: 'images/george-floyd-protests/IMG_5966.jpg', w: 5117, h: 3411 },
-    ]
-  },
-  {
-    id: 'muslim-ban-protest', title: 'Muslim Ban — SeaTac Airport',
-    images: [
-      { src: 'images/muslim-ban-protest/IMG_5056.jpg', w: 2500, h: 1667 },
-      { src: 'images/muslim-ban-protest/IMG_5058.jpg', w: 2500, h: 3750 },
-      { src: 'images/muslim-ban-protest/IMG_4967.jpg', w: 2500, h: 1667 },
-      { src: 'images/muslim-ban-protest/IMG_5084.jpg', w: 2500, h: 3750 },
-      { src: 'images/muslim-ban-protest/IMG_4915.jpg', w: 2500, h: 1667 },
-      { src: 'images/muslim-ban-protest/IMG_4989.jpg', w: 2500, h: 3750 },
-      { src: 'images/muslim-ban-protest/IMG_5064.jpg', w: 2500, h: 1667 },
-      { src: 'images/muslim-ban-protest/IMG_5077.jpg', w: 2500, h: 1667 },
-      { src: 'images/muslim-ban-protest/IMG_4906.jpg', w: 2500, h: 1406 },
-      { src: 'images/muslim-ban-protest/IMG_5107.jpg', w: 2500, h: 3750 },
-      { src: 'images/muslim-ban-protest/IMG_5165.jpg', w: 2500, h: 3750 },
-      { src: 'images/muslim-ban-protest/IMG_5205.jpg', w: 2500, h: 3750 },
-      { src: 'images/muslim-ban-protest/IMG_5244.jpg', w: 2500, h: 1667 },
-      { src: 'images/muslim-ban-protest/IMG_5074.jpg', w: 2500, h: 1667 },
-      { src: 'images/muslim-ban-protest/IMG_5214.jpg', w: 2500, h: 1667 },
-    ]
-  },
-  {
-    id: 'womens-march-on-dc', title: "Women's March on D.C.",
-    images: [
-      { src: 'images/womens-march-on-dc/IMG_4754.jpg', w: 2500, h: 1667 },
-      { src: 'images/womens-march-on-dc/IMG_4776.jpg', w: 2405, h: 3607 },
-      { src: 'images/womens-march-on-dc/IMG_4790.jpg', w: 2500, h: 1407 },
-      { src: 'images/womens-march-on-dc/IMG_4322.jpg', w: 2386, h: 3577 },
-      { src: 'images/womens-march-on-dc/IMG_4705.jpg', w: 2500, h: 1406 },
-      { src: 'images/womens-march-on-dc/IMG_4640.jpg', w: 2500, h: 3750 },
-      { src: 'images/womens-march-on-dc/IMG_4536.jpg', w: 2500, h: 1667 },
-      { src: 'images/womens-march-on-dc/IMG_4351.jpg', w: 2500, h: 1667 },
-      { src: 'images/womens-march-on-dc/IMG_4669.jpg', w: 2500, h: 1667 },
-    ]
-  },
-  {
-    id: 'inauguration-day', title: 'Inauguration Day',
-    images: [
-      { src: 'images/inauguration-day/IMG_3903.jpg', w: 2500, h: 1667 },
-      { src: 'images/inauguration-day/IMG_3869.jpg', w: 2500, h: 1667 },
-      { src: 'images/inauguration-day/IMG_3809.jpg', w: 2500, h: 1667 },
-      { src: 'images/inauguration-day/IMG_3806.JPG', w: 2500, h: 1667 },
-      { src: 'images/inauguration-day/IMG_3844.jpg', w: 2500, h: 1667 },
-      { src: 'images/inauguration-day/IMG_3877.jpg', w: 2500, h: 1667 },
-      { src: 'images/inauguration-day/IMG_3893.jpg', w: 2500, h: 3750 },
-      { src: 'images/inauguration-day/IMG_3938.jpg', w: 2500, h: 3750 },
-      { src: 'images/inauguration-day/IMG_4016.jpg', w: 2500, h: 3750 },
-      { src: 'images/inauguration-day/IMG_9004.jpg', w: 2048, h: 1365 },
-      { src: 'images/inauguration-day/IMG_8993.jpg', w: 1365, h: 2048 },
-      { src: 'images/inauguration-day/IMG_8925.jpg', w: 2048, h: 1365 },
-      { src: 'images/inauguration-day/BJ3C5951.jpg', w: 2048, h: 1365 },
-      { src: 'images/inauguration-day/BJ3C5914.jpg', w: 1365, h: 2048 },
-      { src: 'images/inauguration-day/BJ3C5723.jpg', w: 2048, h: 1365 },
-    ]
-  },
-  {
-    id: 'occupy-wall-street', title: 'Occupy Wall Street',
-    images: [
-      { src: 'images/occupy-wall-street/6276806650_027f7bb861_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/occupy-wall-street/6269201693_aef89741df_o.jpg', w: 2500, h: 3750 },
-      { src: 'images/occupy-wall-street/6290767406_1c82d57a4e_o.jpg', w: 2428, h: 3642 },
-      { src: 'images/occupy-wall-street/6273149064_8f869d0742_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/occupy-wall-street/6290246211_1412d142e1_o.jpg', w: 2500, h: 3750 },
-      { src: 'images/occupy-wall-street/6290245685_ffb2c3a3de_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/occupy-wall-street/6273142998_ff2ca4f401_o.jpg', w: 2500, h: 3750 },
-      { src: 'images/occupy-wall-street/6273143462_decce1b2b4_o.jpg', w: 2500, h: 3750 },
-      { src: 'images/occupy-wall-street/6290246961_6fe5eecf2b_o.jpg', w: 2500, h: 1666 },
-      { src: 'images/occupy-wall-street/6290246685_93ab842abf_o.jpg', w: 2500, h: 3750 },
-      { src: 'images/occupy-wall-street/6273156532_e38c6aabef_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/occupy-wall-street/6290764720_4cf8745635_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/occupy-wall-street/6269731184_30b45f40bb_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/occupy-wall-street/occupywallstreet_6272615463_o.jpg', w: 4368, h: 2912 },
-      { src: 'images/occupy-wall-street/occupywallstreet_6272643611_o.jpg', w: 2912, h: 4368 },
-      { src: 'images/occupy-wall-street/occupywallstreet_6273145406_o.jpg', w: 2912, h: 4368 },
-      { src: 'images/occupy-wall-street/occupywallstreet_6276288421_o.jpg', w: 4368, h: 2912 },
-    ]
-  },
-  {
-    id: 'dnc-2008', title: 'DNC 2008',
-    images: [
-      { src: 'images/dnc-2008/2846729012_d3aa512c7c_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2846729278_63ba1a8079_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2846729088_70ff958f8b_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2845894427_3aca2a347b_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2805949536_26f16d0536_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2805098851_a19d225c8d_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2805098917_358ba2c7f5_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2846728820_88f5c16d15_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2845894709_bf883385a8_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2845895067_06700cdcb2_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2846729180_85d90e75ee_o.jpg', w: 1000, h: 1500 },
-      { src: 'images/dnc-2008/2846729466_6655305519_o.jpg', w: 1500, h: 1000 },
-      { src: 'images/dnc-2008/2846728724_6cf97a1f9b_o.jpg', w: 1500, h: 1000 },
-    ]
-  },
-  {
-    id: 'iraq', title: 'Iraq',
-    images: [
-      { src: 'images/iraq/2242821174_bbf6a6c266_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2238287503_c1aa81cc60_o.jpg', w: 960, h: 640 },
-      { src: 'images/iraq/2234513962_ce25009673_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2242027765_80b600fca6_o.jpg', w: 2500, h: 1666 },
-      { src: 'images/iraq/2242016731_7ca82d4b19_o.jpg', w: 2500, h: 3750 },
-      { src: 'images/iraq/2249658270_9258879045_o.jpg', w: 2500, h: 3750 },
-      { src: 'images/iraq/2242827708_6e77779128_o.jpg', w: 2500, h: 3750 },
-      { src: 'images/iraq/2248858707_618793e7a4_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2249654334_9feef56e48_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2248860913_a6696fa48f_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2249655268_207ccefa45_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2249657334_fdf663843e_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2249655426_5ae8c0acaf_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2249657566_4b18127af4_o.jpg', w: 2500, h: 1667 },
-      { src: 'images/iraq/2234578472_f11351407a_o.jpg', w: 600, h: 400 },
-      { src: 'images/iraq/2249653880_5ddb8a53ee_o.jpg', w: 4368, h: 2912 },
-      { src: 'images/iraq/img_1563jpg_2233726043_o.jpg', w: 3930, h: 2620 },
-      { src: 'images/iraq/img_2260jpg_2248858183_o.jpg', w: 2912, h: 4368 },
-      { src: 'images/iraq/img_2411jpg_2248860231_o.jpg', w: 4368, h: 2912 },
-    ]
-  },
-];
-
 // ── STATE ─────────────────────────────────────────────────────────
-const photoState    = {};  // per-album photo ordering
-const photoOriginal = {};  // original photo ordering
+let GALLERIES = [];          // populated by linkToIndexHtml()
 
-GALLERIES.forEach(g => {
-  photoState[g.id]    = g.images.map(img => ({ ...img }));
-  photoOriginal[g.id] = g.images.map(img => ({ ...img }));
-});
+const photoState    = {};    // id → current photo array
+const photoOriginal = {};    // id → photo array as loaded (for change detection)
+const previewIdx    = {};    // id → index of preview/hero image
+const previewIdxOrig = {};   // id → previewIdx as loaded (for change detection)
 
-// Album order & deletion
-let albumOrder    = [
-  'student-rally', 'iceout-federal', 'mn-protest', 'iceoutnow',
-  'bovino', 'jake-lang', 'handmaids', 'freepalestine', 'nokings1',
-  'marchonwashington', 'j25', 'george-floyd-protests', 'muslim-ban-protest',
-  'womens-march-on-dc', 'inauguration-day', 'occupy-wall-street', 'dnc-2008', 'iraq'
-];
-const origOrder   = [
-  'student-rally', 'iceout-federal', 'mn-protest', 'iceoutnow',
-  'bovino', 'jake-lang', 'handmaids', 'freepalestine', 'nokings1',
-  'marchonwashington', 'j25', 'george-floyd-protests', 'muslim-ban-protest',
-  'womens-march-on-dc', 'inauguration-day', 'occupy-wall-street', 'dnc-2008', 'iraq'
-];
+let albumOrder    = [];
+let origOrder     = [];
 const deletedAlbums = new Set();
 
-let activeId       = null;
+let activeId        = null;
 let savedFileHandle = null;
+
+// ── LOAD FROM INDEX.HTML ──────────────────────────────────────────
+document.getElementById('loadBtn').addEventListener('click', linkToIndexHtml);
+
+async function linkToIndexHtml() {
+  if (!window.showOpenFilePicker) {
+    showToast('File System API not supported — use Chrome/Edge', true);
+    return;
+  }
+  let fh;
+  try {
+    [fh] = await window.showOpenFilePicker({
+      types: [{ description: 'HTML Files', accept: { 'text/html': ['.html'] } }],
+    });
+  } catch { return; }
+
+  const content = await (await fh.getFile()).text();
+  const doc = new DOMParser().parseFromString(content, 'text/html');
+
+  // Build GALLERIES from DOM order (= display order after arranger saves)
+  GALLERIES = [];
+  doc.querySelectorAll('.gallery-outer[id]').forEach(section => {
+    const id = section.id;
+    const track = section.querySelector('.gallery-track');
+    if (!track) return;
+    GALLERIES.push({
+      id,
+      title: track.dataset.title || id,
+      images: Array.from(track.querySelectorAll('img')).map(img => ({
+        src: img.getAttribute('src'),
+        w: +img.getAttribute('width') || 0,
+        h: +img.getAttribute('height') || 0,
+      })),
+    });
+  });
+
+  if (!GALLERIES.length) {
+    showToast('No gallery sections found in that file', true);
+    return;
+  }
+
+  // Initialise per-album state
+  GALLERIES.forEach(g => {
+    photoState[g.id]     = g.images.map(i => ({ ...i }));
+    photoOriginal[g.id]  = g.images.map(i => ({ ...i }));
+    previewIdx[g.id]     = 0;
+    previewIdxOrig[g.id] = 0;
+  });
+  albumOrder = GALLERIES.map(g => g.id);
+  origOrder  = [...albumOrder];
+  deletedAlbums.clear();
+
+  // Restore preview selections from the heroImages array in the script
+  const scriptText = Array.from(doc.querySelectorAll('script'))
+    .map(s => s.textContent).find(t => t.includes('heroImages')) || '';
+  const m = scriptText.match(/const heroImages\s*=\s*\[([\s\S]*?)\];/);
+  if (m) {
+    const srcs = [...m[1].matchAll(/'([^']+)'/g)].map(x => x[1]);
+    GALLERIES.forEach((g, i) => {
+      const heroSrc = srcs[i];
+      if (!heroSrc) return;
+      const idx = photoState[g.id].findIndex(img => img.src === heroSrc);
+      const resolved = idx >= 0 ? idx : 0;
+      previewIdx[g.id]     = resolved;
+      previewIdxOrig[g.id] = resolved;
+    });
+  }
+
+  savedFileHandle = fh;
+  document.getElementById('fileHint').innerHTML =
+    `Linked: <span class="file-name">${fh.name}</span>`;
+  document.getElementById('saveBtn').disabled = false;
+
+  // Reset UI
+  activeId = null;
+  document.getElementById('albumTitle').textContent = 'Select an album';
+  document.getElementById('albumCount').textContent = '';
+  strip.innerHTML = '';
+  const es = document.getElementById('emptyState');
+  es.style.display = '';
+  es.textContent   = '\u2190 Select an album to begin';
+
+  renderSidebar();
+  showToast(`Loaded ${GALLERIES.length} albums`, false);
+}
 
 // ── SIDEBAR ───────────────────────────────────────────────────────
 let sidebarDragSrc = null;
@@ -796,15 +567,23 @@ let sidebarDragSrc = null;
 function renderSidebar() {
   const list = document.getElementById('albumList');
   list.innerHTML = '';
+  if (!GALLERIES.length) return;
 
   albumOrder.forEach((id, idx) => {
     const g = GALLERIES.find(x => x.id === id);
-    const visibleIdx = albumOrder.slice(0, idx + 1).filter(i => !deletedAlbums.has(i)).indexOf(id);
-    const num = String(visibleIdx + 1).padStart(2, '0');
+    if (!g) return;
+
+    const visibleIdx = albumOrder
+      .slice(0, idx + 1)
+      .filter(i => !deletedAlbums.has(i))
+      .indexOf(id);
+    const num   = String(visibleIdx + 1).padStart(2, '0');
     const isDel = deletedAlbums.has(id);
 
-    const photoChanged = photoState[id].length !== photoOriginal[id].length ||
-      photoState[id].some((img, i) => img.src !== photoOriginal[id][i]?.src);
+    const photoChanged =
+      photoState[id].length !== photoOriginal[id].length ||
+      photoState[id].some((img, i) => img.src !== photoOriginal[id][i]?.src) ||
+      (previewIdx[id] ?? 0) !== (previewIdxOrig[id] ?? 0);
     const structureChanged = isDel || idx !== origOrder.indexOf(id);
 
     const row = document.createElement('div');
@@ -814,30 +593,26 @@ function renderSidebar() {
       ((photoChanged || structureChanged) ? ' changed' : '');
     row.dataset.id = id;
 
-    // Drag handle
     const handle = document.createElement('span');
     handle.className = 'drag-handle';
-    handle.textContent = '⠿';
+    handle.textContent = '\u2837';
     handle.setAttribute('draggable', 'false');
 
-    // Main button
     const btn = document.createElement('button');
     btn.className = 'album-btn';
-    btn.innerHTML = `<span class="num">${isDel ? '—' : num}</span>${g.title}<span class="changed-dot"></span>`;
-    if (!isDel) {
-      btn.addEventListener('click', () => selectAlbum(id));
-    }
+    btn.innerHTML =
+      `<span class="num">${isDel ? '\u2014' : num}</span>${g.title}<span class="changed-dot"></span>`;
+    if (!isDel) btn.addEventListener('click', () => selectAlbum(id));
 
-    // Delete / restore button
     const action = document.createElement('button');
     if (isDel) {
       action.className = 'album-action restore';
-      action.textContent = '↺';
+      action.textContent = '\u21ba';
       action.title = 'Restore album';
       action.addEventListener('click', e => { e.stopPropagation(); restoreAlbum(id); });
     } else {
       action.className = 'album-action delete';
-      action.textContent = '×';
+      action.textContent = '\xd7';
       action.title = 'Remove from site';
       action.addEventListener('click', e => { e.stopPropagation(); deleteAlbum(id); });
     }
@@ -846,7 +621,6 @@ function renderSidebar() {
     row.appendChild(btn);
     row.appendChild(action);
 
-    // Sidebar drag-to-reorder (via the handle or the row itself)
     row.draggable = true;
     row.addEventListener('dragstart', e => {
       sidebarDragSrc = idx;
@@ -859,7 +633,6 @@ function renderSidebar() {
       list.querySelectorAll('.album-row').forEach(r => r.classList.remove('drag-over-row'));
     });
     row.addEventListener('dragover', e => {
-      // Only handle sidebar drags (not photo drags)
       if (sidebarDragSrc === null) return;
       e.preventDefault();
       e.dataTransfer.dropEffect = 'move';
@@ -905,7 +678,7 @@ function restoreAlbum(id) {
   renderSidebar();
 }
 
-// ── FILMSTRIP ─────────────────────────────────────────────────────
+// ── GRID ──────────────────────────────────────────────────────────
 const strip   = document.getElementById('photoGrid');
 const titleEl = document.getElementById('albumTitle');
 const countEl = document.getElementById('albumCount');
@@ -913,12 +686,12 @@ const countEl = document.getElementById('albumCount');
 let photoDragSrc = null;
 
 function renderGrid(id) {
-  const g = GALLERIES.find(x => x.id === id);
+  const g   = GALLERIES.find(x => x.id === id);
   titleEl.textContent = g.title;
   const imgs = photoState[id];
+  const pi   = previewIdx[id] ?? 0;
   countEl.textContent = imgs.length + ' photos';
   strip.innerHTML = '';
-  strip.scrollLeft = 0;
 
   imgs.forEach((img, i) => {
     const item = document.createElement('div');
@@ -927,6 +700,7 @@ function renderGrid(id) {
     item.dataset.index = i;
     if (img.w > img.h) item.dataset.landscape = '1';
 
+    // Position number badge
     const badge = document.createElement('span');
     badge.className = 'index-badge';
     badge.textContent = i + 1;
@@ -943,38 +717,54 @@ function renderGrid(id) {
     item.appendChild(image);
     item.appendChild(fname);
 
-    if (i === 0) {
+    // Preview badge on selected image; star button on all others
+    if (i === pi) {
       const preview = document.createElement('span');
       preview.className = 'preview-badge';
       preview.textContent = 'Preview';
       item.appendChild(preview);
+    } else {
+      const setBtn = document.createElement('span');
+      setBtn.className = 'set-preview-btn';
+      setBtn.textContent = '\u2605';
+      setBtn.title = 'Set as hero preview image';
+      setBtn.addEventListener('click', e => {
+        e.stopPropagation();
+        previewIdx[id] = i;
+        renderGrid(id);
+        renderSidebar();
+      });
+      item.appendChild(setBtn);
     }
 
+    // Remove button (×, bottom-right)
     const removeBtn = document.createElement('span');
     removeBtn.className = 'photo-remove';
-    removeBtn.textContent = '×';
+    removeBtn.textContent = '\xd7';
     removeBtn.title = 'Remove photo';
     removeBtn.addEventListener('click', e => {
       e.stopPropagation();
+      const curPi = previewIdx[id] ?? 0;
       photoState[id].splice(i, 1);
+      if (i < curPi)        previewIdx[id] = curPi - 1;
+      else if (i === curPi) previewIdx[id] = 0;
       renderGrid(id);
       renderSidebar();
     });
     item.appendChild(removeBtn);
 
+    // Drag-to-reorder
     item.addEventListener('dragstart', e => {
       photoDragSrc = i;
-      sidebarDragSrc = null; // ensure sidebar drag is cleared
+      sidebarDragSrc = null;
       item.classList.add('dragging');
       e.dataTransfer.effectAllowed = 'move';
     });
-
     item.addEventListener('dragend', () => {
       photoDragSrc = null;
       item.classList.remove('dragging');
       strip.querySelectorAll('.photo-item').forEach(el => el.classList.remove('drag-over'));
     });
-
     item.addEventListener('dragover', e => {
       if (photoDragSrc === null) return;
       e.preventDefault();
@@ -982,16 +772,23 @@ function renderGrid(id) {
       strip.querySelectorAll('.photo-item').forEach(el => el.classList.remove('drag-over'));
       item.classList.add('drag-over');
     });
-
     item.addEventListener('drop', e => {
       if (photoDragSrc === null) return;
       e.preventDefault();
       const destIdx = parseInt(item.dataset.index);
       if (photoDragSrc === destIdx) return;
-      const arr = photoState[id];
+      const arr   = photoState[id];
+      const curPi = previewIdx[id] ?? 0;
       const [moved] = arr.splice(photoDragSrc, 1);
       arr.splice(destIdx, 0, moved);
-      markPhotoChanged(id);
+      // Keep previewIdx pointing at the same photo after the reorder
+      if (photoDragSrc === curPi) {
+        previewIdx[id] = destIdx;
+      } else if (photoDragSrc < curPi && destIdx >= curPi) {
+        previewIdx[id] = curPi - 1;
+      } else if (photoDragSrc > curPi && destIdx <= curPi) {
+        previewIdx[id] = curPi + 1;
+      }
       renderGrid(id);
       renderSidebar();
     });
@@ -1000,21 +797,21 @@ function renderGrid(id) {
   });
 }
 
-function markPhotoChanged(id) {
-  // Sidebar re-render will pick up changes via photoState comparison
-}
-
 // ── TOOLBAR ───────────────────────────────────────────────────────
 document.getElementById('reverseBtn').addEventListener('click', () => {
   if (!activeId) return;
+  const curPi = previewIdx[activeId] ?? 0;
+  const len   = photoState[activeId].length;
   photoState[activeId].reverse();
+  previewIdx[activeId] = len - 1 - curPi;
   renderGrid(activeId);
   renderSidebar();
 });
 
 document.getElementById('resetBtn').addEventListener('click', () => {
   if (!activeId) return;
-  photoState[activeId] = photoOriginal[activeId].map(img => ({ ...img }));
+  photoState[activeId]  = photoOriginal[activeId].map(img => ({ ...img }));
+  previewIdx[activeId]  = previewIdxOrig[activeId] ?? 0;
   renderGrid(activeId);
   renderSidebar();
 });
@@ -1023,62 +820,48 @@ document.getElementById('resetBtn').addEventListener('click', () => {
 document.getElementById('saveBtn').addEventListener('click', saveToIndexHtml);
 
 async function saveToIndexHtml() {
+  if (!GALLERIES.length) {
+    showToast('Link to index.html first', true);
+    return;
+  }
+
   const activeIds = albumOrder.filter(id => !deletedAlbums.has(id));
 
   const anyChange =
     deletedAlbums.size > 0 ||
     albumOrder.some((id, i) => id !== origOrder[i]) ||
-    GALLERIES.some(g => photoState[g.id].some((img, i) => img.src !== photoOriginal[g.id][i]?.src));
+    GALLERIES.some(g =>
+      photoState[g.id].length !== photoOriginal[g.id].length ||
+      photoState[g.id].some((img, i) => img.src !== photoOriginal[g.id][i]?.src) ||
+      (previewIdx[g.id] ?? 0) !== (previewIdxOrig[g.id] ?? 0)
+    );
 
   if (!anyChange) {
     showToast('No changes to save', false);
     return;
   }
 
-  if (!savedFileHandle) {
-    if (!window.showOpenFilePicker) {
-      showToast('File System API not supported — use Chrome/Edge', true);
-      return;
-    }
-    try {
-      [savedFileHandle] = await window.showOpenFilePicker({
-        types: [{ description: 'HTML Files', accept: { 'text/html': ['.html'] } }],
-        excludeAcceptAllOption: false,
-      });
-      document.getElementById('fileHint').innerHTML =
-        `Linked to: <span class="file-name">${savedFileHandle.name}</span>`;
-    } catch (e) {
-      return;
-    }
-  }
-
   const saveBtn = document.getElementById('saveBtn');
   saveBtn.disabled = true;
-  saveBtn.textContent = 'Saving…';
+  saveBtn.textContent = 'Saving\u2026';
 
   try {
-    const file = await savedFileHandle.getFile();
+    const file    = await savedFileHandle.getFile();
     const content = await file.text();
+    const parser  = new DOMParser();
+    const doc     = parser.parseFromString(content, 'text/html');
 
-    // Parse with DOMParser for reliable DOM manipulation
-    const parser = new DOMParser();
-    const doc = parser.parseFromString(content, 'text/html');
-
-    // Collect all existing gallery-outer sections by id
+    // Index existing sections
     const sectionMap = {};
-    doc.querySelectorAll('.gallery-outer[id]').forEach(el => {
-      sectionMap[el.id] = el;
-    });
+    doc.querySelectorAll('.gallery-outer[id]').forEach(el => { sectionMap[el.id] = el; });
 
-    // Update photo order inside each active gallery's track
+    // Update photo order inside each track
     activeIds.forEach(id => {
       const section = sectionMap[id];
       if (!section) return;
       const track = section.querySelector('.gallery-track');
       if (!track) return;
-      // Clear old imgs
       Array.from(track.querySelectorAll('img')).forEach(img => img.remove());
-      // Insert in new order
       photoState[id].forEach(imgData => {
         const img = doc.createElement('img');
         img.src = imgData.src;
@@ -1089,7 +872,7 @@ async function saveToIndexHtml() {
       });
     });
 
-    // Update info-num in each active section to reflect new position
+    // Update position numbers
     activeIds.forEach((id, idx) => {
       const section = sectionMap[id];
       if (!section) return;
@@ -1097,9 +880,9 @@ async function saveToIndexHtml() {
       if (numEl) numEl.textContent = String(idx + 1).padStart(2, '0');
     });
 
-    // Remove all gallery sections from DOM, then re-insert in new order
+    // Re-insert sections in new order
     Object.values(sectionMap).forEach(el => el.remove());
-    const mainEl = doc.querySelector('.main');
+    const mainEl   = doc.querySelector('.main');
     const footerEl = doc.querySelector('footer');
     activeIds.forEach(id => {
       if (sectionMap[id]) mainEl.insertBefore(sectionMap[id], footerEl);
@@ -1110,13 +893,12 @@ async function saveToIndexHtml() {
     if (navUl) {
       navUl.innerHTML = '';
       activeIds.forEach((id, idx) => {
-        const g = GALLERIES.find(x => x.id === id);
+        const g   = GALLERIES.find(x => x.id === id);
         const num = String(idx + 1).padStart(2, '0');
-        const li = doc.createElement('li');
-        const a = doc.createElement('a');
+        const li  = doc.createElement('li');
+        const a   = doc.createElement('a');
         a.href = `#${id}`;
         a.setAttribute('data-section', id);
-        // Preserve original link text structure: num span + title
         const numSpan = doc.createElement('span');
         numSpan.className = 'nav-num';
         numSpan.textContent = num;
@@ -1127,8 +909,13 @@ async function saveToIndexHtml() {
       });
     }
 
-    // Update heroImages in the script tag
-    const heroLines = activeIds.map(id => `    '${photoState[id][0].src}'`).join(',\n');
+    // Update heroImages using previewIdx (not necessarily index 0)
+    const heroLines = activeIds.map(id => {
+      const pi  = previewIdx[id] ?? 0;
+      const src = photoState[id][pi]?.src || photoState[id][0]?.src;
+      return `    '${src}'`;
+    }).join(',\n');
+
     doc.querySelectorAll('script').forEach(script => {
       if (script.textContent.includes('heroImages')) {
         script.textContent = script.textContent.replace(
@@ -1138,17 +925,28 @@ async function saveToIndexHtml() {
       }
     });
 
-    // Serialize and write back
+    // Keep galleryOrder in sync so JS reorder is a no-op
+    doc.querySelectorAll('script').forEach(script => {
+      if (script.textContent.includes('galleryOrder')) {
+        const idList = activeIds.map(id => `    '${id}'`).join(',\n');
+        script.textContent = script.textContent.replace(
+          /const galleryOrder = \[[\s\S]*?\];/,
+          `const galleryOrder = [\n${idList}\n  ];`
+        );
+      }
+    });
+
+    // Write file
     const newContent = '<!DOCTYPE html>\n' + doc.documentElement.outerHTML;
-    const writable = await savedFileHandle.createWritable();
+    const writable   = await savedFileHandle.createWritable();
     await writable.write(newContent);
     await writable.close();
 
-    // Commit state
+    // Commit state so change-dots clear
     GALLERIES.forEach(g => {
-      photoOriginal[g.id] = photoState[g.id].map(img => ({ ...img }));
+      photoOriginal[g.id]  = photoState[g.id].map(img => ({ ...img }));
+      previewIdxOrig[g.id] = previewIdx[g.id] ?? 0;
     });
-    // Update origOrder to reflect saved state
     origOrder.length = 0;
     activeIds.forEach(id => origOrder.push(id));
     deletedAlbums.clear();
@@ -1157,7 +955,7 @@ async function saveToIndexHtml() {
     showToast('Saved to index.html', false);
   } catch (err) {
     console.error(err);
-    showToast('Save failed — check console', true);
+    showToast('Save failed \u2014 check console', true);
   } finally {
     saveBtn.disabled = false;
     saveBtn.textContent = 'Save to index.html';
