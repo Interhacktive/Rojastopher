@@ -28,7 +28,6 @@
       background: var(--black);
       color: var(--text);
       font-family: var(--font-sans);
-      overflow-x: hidden;
     }
 
     /* ── SIDEBAR ──────────────────────────────────────────────── */
@@ -1216,28 +1215,15 @@
     setHeight();
     window.addEventListener('resize', setHeight);
 
-    // Fade-in images on load
-    track.querySelectorAll('img').forEach(img => {
+    // Attach lightbox clicks + fade-in on load
+    const imgEls  = track.querySelectorAll('img');
+    const title   = track.dataset.title;
+    const imgSrcs = Array.from(imgEls).map(i => i.src);
+
+    imgEls.forEach((img, idx) => {
+      img.addEventListener('click', () => openLightbox(imgSrcs, idx, title));
       if (img.complete) img.classList.add('loaded');
       else img.addEventListener('load', () => img.classList.add('loaded'));
-    });
-
-    // Left / right nav zones — click to scroll one photo forward or back
-    const stickyEl = outer.querySelector('.gallery-sticky');
-    const zoneLeft  = document.createElement('div');
-    const zoneRight = document.createElement('div');
-    zoneLeft.className  = 'gallery-nav-zone gallery-nav-left';
-    zoneRight.className = 'gallery-nav-zone gallery-nav-right';
-    stickyEl.appendChild(zoneLeft);
-    stickyEl.appendChild(zoneRight);
-
-    zoneLeft.addEventListener('click', () => {
-      const scrollRange = outer.offsetHeight - window.innerHeight;
-      window.scrollBy({ top: -(scrollRange / numImgs), behavior: 'smooth' });
-    });
-    zoneRight.addEventListener('click', () => {
-      const scrollRange = outer.offsetHeight - window.innerHeight;
-      window.scrollBy({ top: scrollRange / numImgs, behavior: 'smooth' });
     });
 
     galleries.push({ outer, track, progBar, counter, numImgs });
@@ -1277,7 +1263,6 @@
 
   function updateGalleries() {
     rafPending = false;
-    updateActiveNav();
     const sy = window.scrollY;
     const vh = window.innerHeight;
 
@@ -1305,19 +1290,21 @@
   }
 
   updateGalleries(); // initial pass
-  updateActiveNav();
 
   // ── SIDEBAR ACTIVE LINK ──────────────────────────────────────────
   const navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
-  let activeNavIdx = -1;
 
-  function updateActiveNav() {
-    const idx = currentGalleryIndex();
-    if (idx === activeNavIdx) return;
-    activeNavIdx = idx;
-    const activeId = idx >= 0 ? galleries[idx].outer.id : null;
-    navLinks.forEach(a => a.classList.toggle('active', a.dataset.section === activeId));
-  }
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.dataset.section === e.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.gallery-outer[id]').forEach(s => sectionObserver.observe(s));
 
   // Mobile nav scroll indicator
   const navEl = document.getElementById('sidebarNav');
@@ -1361,7 +1348,7 @@
   heroImages.forEach((src, i) => {
     const slide = document.createElement('div');
     slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
-    slide.style.backgroundImage = `url('${src}')`;
+    slide.style.backgroundImage = `url('${encodeURI(src)}')`;
     slidesEl.appendChild(slide);
 
     const dot = document.createElement('button');

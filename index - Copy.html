@@ -1,0 +1,1366 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rojastopher — Documentary Photography</title>
+  <meta name="description" content="Documentary photography by Rojastopher — capturing protest, politics, and humanity from 2008 to present." />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --sidebar-w: 220px;
+      --info-h: 68px;
+      --black: #0a0a0a;
+      --surface: #111;
+      --border: #1e1e1e;
+      --text: #e0e0e0;
+      --muted: #666;
+      --accent: #c8a96e;
+      --gap: 3px;
+      --ease: cubic-bezier(0.4, 0, 0.2, 1);
+      --font-sans: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      --font-serif: Georgia, 'Times New Roman', serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--black);
+      color: var(--text);
+      font-family: var(--font-sans);
+      overflow-x: hidden;
+    }
+
+    /* ── SIDEBAR ──────────────────────────────────────────────── */
+    .sidebar {
+      position: fixed;
+      top: 0; left: 0;
+      width: var(--sidebar-w);
+      height: 100vh;
+      z-index: 200;
+      display: flex;
+      flex-direction: column;
+      background: var(--black);
+      border-right: 1px solid var(--border);
+    }
+
+    .sidebar-logo {
+      padding: 28px 24px 24px;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+
+    .sidebar-logo a {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 20px;
+      color: var(--accent);
+      text-decoration: none;
+      letter-spacing: 0.01em;
+      display: block;
+    }
+
+    .sidebar-logo span {
+      display: block;
+      font-family: var(--font-sans);
+      font-style: normal;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-top: 5px;
+    }
+
+    .sidebar-nav {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scrollbar-width: none;
+      padding: 16px 0;
+    }
+
+    .sidebar-nav::-webkit-scrollbar { display: none; }
+
+    .sidebar-nav a {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      padding: 9px 24px;
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      transition: color 0.2s, background 0.15s;
+      border-left: 2px solid transparent;
+    }
+
+    .sidebar-nav a:hover {
+      color: var(--text);
+      background: rgba(255,255,255,0.03);
+    }
+
+    .sidebar-nav a.active {
+      color: var(--accent);
+      border-left-color: var(--accent);
+      background: rgba(200,169,110,0.06);
+    }
+
+    .sidebar-nav .nav-num {
+      font-size: 9px;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .sidebar-nav a.active .nav-num { color: var(--accent); }
+
+    .sidebar-footer {
+      border-top: 1px solid var(--border);
+      padding: 16px 24px;
+      flex-shrink: 0;
+    }
+
+    .sidebar-footer a {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-decoration: none;
+      padding: 6px 0;
+      transition: color 0.2s;
+    }
+
+    .sidebar-footer a:hover { color: var(--accent); }
+
+    /* ── MAIN ─────────────────────────────────────────────────── */
+    .main {
+      margin-left: var(--sidebar-w);
+    }
+
+    /* ── HERO ─────────────────────────────────────────────────── */
+    .hero {
+      position: relative;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .hero-slides { position: absolute; inset: 0; }
+
+    .hero-slide {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0;
+      transition: opacity 1.4s var(--ease);
+    }
+
+    .hero-slide.active { opacity: 1; }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        160deg,
+        rgba(0,0,0,0.1) 0%,
+        rgba(0,0,0,0.5) 60%,
+        rgba(0,0,0,0.85) 100%
+      );
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 56px;
+      left: 52px;
+      right: 52px;
+      z-index: 2;
+    }
+
+    .hero-eyebrow {
+      font-size: 9px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .hero-title {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-weight: normal;
+      font-size: clamp(44px, 6vw, 80px);
+      line-height: 1.05;
+      color: #fff;
+      max-width: 600px;
+    }
+
+    .hero-dots {
+      position: absolute;
+      top: 50%;
+      right: 28px;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      z-index: 2;
+    }
+
+    .hero-dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.25);
+      border: none;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+
+    .hero-dot.active {
+      background: var(--accent);
+      transform: scale(1.4);
+    }
+
+    .hero-scroll-hint {
+      position: absolute;
+      bottom: 32px;
+      right: 28px;
+      z-index: 2;
+      writing-mode: vertical-rl;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .hero-scroll-hint::after {
+      content: '';
+      display: block;
+      width: 1px;
+      height: 36px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.3), transparent);
+    }
+
+    /* ── GALLERY SECTIONS ─────────────────────────────────────── */
+    .gallery-outer {
+      position: relative;
+      /* height set by JS */
+    }
+
+    .gallery-sticky {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow: hidden;
+      background: var(--black);
+    }
+
+    .gallery-track {
+      display: flex;
+      gap: var(--gap);
+      height: calc(100% - var(--info-h));
+      will-change: transform;
+    }
+
+    .gallery-track img {
+      height: 100%;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+      cursor: pointer;
+      transition: filter 0.35s;
+    }
+
+    .gallery-track img:hover { filter: brightness(1.08); }
+
+    /* ── GALLERY INFO BAR ─────────────────────────────────────── */
+    .gallery-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: var(--info-h);
+      display: flex;
+      align-items: center;
+      padding: 0 24px;
+      border-top: 1px solid var(--border);
+      background: rgba(10,10,10,0.96);
+      gap: 20px;
+    }
+
+    .info-num {
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      flex-shrink: 0;
+    }
+
+    .info-divider {
+      width: 1px;
+      height: 20px;
+      background: var(--border);
+      flex-shrink: 0;
+    }
+
+    .info-title {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--text);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .info-meta {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .info-counter {
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      white-space: nowrap;
+      flex-shrink: 0;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .info-progress {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: var(--border);
+    }
+
+    .info-progress-bar {
+      height: 100%;
+      width: 0%;
+      background: var(--accent);
+      transition: width 0.05s linear;
+    }
+
+    /* ── LIGHTBOX ─────────────────────────────────────────────── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      background: rgba(0,0,0,0.97);
+      align-items: center;
+      justify-content: center;
+    }
+
+    .lightbox.open { display: flex; }
+
+    .lightbox img {
+      max-width: calc(100vw - 120px);
+      max-height: 92vh;
+      object-fit: contain;
+      display: block;
+      cursor: e-resize;
+    }
+
+    .lb-btn {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: rgba(255,255,255,0.3);
+      font-size: 40px;
+      cursor: pointer;
+      padding: 20px 28px;
+      line-height: 1;
+      transition: color 0.2s;
+      z-index: 1001;
+    }
+
+    .lb-btn:hover { color: #fff; }
+    #lbPrev { left: 0; }
+    #lbNext { right: 0; }
+
+    #lbClose {
+      position: fixed;
+      top: 20px; right: 24px;
+      background: none; border: none;
+      color: rgba(255,255,255,0.4);
+      font-size: 26px;
+      cursor: pointer;
+      z-index: 1001;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    #lbClose:hover { color: #fff; }
+
+    .lb-info {
+      position: fixed;
+      bottom: 20px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      z-index: 1001;
+    }
+
+    /* ── FOOTER ───────────────────────────────────────────────── */
+    footer {
+      margin-left: 0;
+      border-top: 1px solid var(--border);
+      padding: 40px 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+
+    footer .footer-logo {
+      font-family: var(--font-serif);
+      font-style: italic;
+      font-size: 18px;
+      color: var(--accent);
+    }
+
+    footer a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    /* ── IMG FADE-IN ──────────────────────────────────────────── */
+    .gallery-track img {
+      opacity: 0;
+      transition: opacity 0.5s var(--ease), filter 0.35s;
+    }
+
+    .gallery-track img.loaded { opacity: 1; }
+
+    /* ── MOBILE ───────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      :root { --sidebar-w: 0px; }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .sidebar-logo {
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+        padding: 14px 18px;
+        flex-shrink: 0;
+      }
+
+      .sidebar-logo span { display: none; }
+      .sidebar-logo a { font-size: 17px; }
+
+      .sidebar-nav {
+        flex: 1;
+        overflow-x: auto;
+        overflow-y: hidden;
+        display: flex;
+        padding: 0;
+        min-width: 0;
+      }
+
+      .sidebar-nav ul {
+        display: flex;
+        flex-direction: row;
+        list-style: none;
+        flex-wrap: nowrap;
+        padding-right: 40px;
+      }
+
+      .sidebar-nav a {
+        padding: 0 14px;
+        height: 52px;
+        white-space: nowrap;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        flex-shrink: 0;
+        font-size: 10px;
+      }
+
+      .sidebar-nav a.active {
+        border-left-color: transparent;
+        border-bottom-color: var(--accent);
+      }
+
+      .sidebar-nav .nav-num { display: none; }
+
+      .sidebar-footer { display: none; }
+
+      .main { margin-left: 0; padding-top: 52px; }
+
+      .hero { height: calc(100vh - 52px); }
+
+      .hero-content { left: 24px; right: 24px; }
+
+      .gallery-info { padding: 0 16px; }
+
+      footer { flex-direction: column; gap: 10px; padding: 32px 24px; text-align: center; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-title { font-size: 36px; }
+      .info-meta { display: none; }
+      .lb-btn { font-size: 28px; padding: 16px 18px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-logo">
+    <a href="#">Rojastopher</a>
+    <span>Documentary Photography</span>
+  </div>
+  <nav class="sidebar-nav" id="sidebarNav">
+    <ul>
+      <li><a href="#freepalestine" data-section="freepalestine"><span class="nav-num">01</span>Free Palestine</a></li>
+      <li><a href="#nokings1" data-section="nokings1"><span class="nav-num">02</span>No Kings Seattle</a></li>
+      <li><a href="#student-rally" data-section="student-rally"><span class="nav-num">03</span>Student Rally</a></li>
+      <li><a href="#iceoutnow" data-section="iceoutnow"><span class="nav-num">04</span>ICE Out Now</a></li>
+      <li><a href="#iceout-federal" data-section="iceout-federal"><span class="nav-num">05</span>ICE Out — Federal Bldg</a></li>
+      <li><a href="#mn-protest" data-section="mn-protest"><span class="nav-num">06</span>Minneapolis ICE OUT</a></li>
+      <li><a href="#bovino" data-section="bovino"><span class="nav-num">07</span>Greg Bovino</a></li>
+      <li><a href="#jake-lang" data-section="jake-lang"><span class="nav-num">08</span>Jake Lang</a></li>
+      <li><a href="#2025" data-section="2025"><span class="nav-num">09</span>2025</a></li>
+      <li><a href="#handmaids" data-section="handmaids"><span class="nav-num">10</span>Handmaids</a></li>
+      <li><a href="#george-floyd-protests" data-section="george-floyd-protests"><span class="nav-num">11</span>George Floyd</a></li>
+      <li><a href="#womens-march-on-dc" data-section="womens-march-on-dc"><span class="nav-num">12</span>Women's March D.C.</a></li>
+      <li><a href="#inaugertion-day" data-section="inaugertion-day"><span class="nav-num">13</span>Inauguration Day</a></li>
+      <li><a href="#muslim-ban-protest" data-section="muslim-ban-protest"><span class="nav-num">14</span>Muslim Ban — SeaTac</a></li>
+      <li><a href="#muslim-ban-protest-westlake-center" data-section="muslim-ban-protest-westlake-center"><span class="nav-num">15</span>Muslim Ban — Westlake</a></li>
+      <li><a href="#occupy-wall-street" data-section="occupy-wall-street"><span class="nav-num">16</span>Occupy Wall Street</a></li>
+      <li><a href="#dnc-2008" data-section="dnc-2008"><span class="nav-num">17</span>DNC 2008</a></li>
+      <li><a href="#iraq" data-section="iraq"><span class="nav-num">18</span>Iraq</a></li>
+    </ul>
+  </nav>
+  <div class="sidebar-footer">
+    <a href="about.html">About the Photographer</a>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-slides" id="heroSlides"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-eyebrow">Witness · Remember · Resist</p>
+      <h1 class="hero-title">Seventeen years of documentary photography.</h1>
+    </div>
+    <div class="hero-dots" id="heroDots"></div>
+    <div class="hero-scroll-hint">Scroll</div>
+  </section>
+
+  <!-- 01 — FREE PALESTINE -->
+  <div class="gallery-outer" id="freepalestine">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="freepalestine" data-title="Free Palestine">
+        <img src="images/freepalestine/BJ3C9148.jpg" width="2500" height="3750" alt="" />
+        <img src="images/freepalestine/BJ3C9250.jpg" width="2500" height="3750" alt="" />
+        <img src="images/freepalestine/BJ3C9300.jpg" width="2500" height="3750" alt="" />
+        <img src="images/freepalestine/BJ3C9349.jpg" width="2500" height="3750" alt="" />
+        <img src="images/freepalestine/BJ3C9360.jpg" width="2500" height="3750" alt="" />
+        <img src="images/freepalestine/BJ3C9466.jpg" width="2500" height="3750" alt="" />
+        <img src="images/freepalestine/BJ3C9497.jpg" width="2500" height="3750" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">01</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Free Palestine</span>
+        <span class="info-meta">Seattle, WA</span>
+        <span class="info-counter" id="counter-freepalestine">1 — 7</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-freepalestine"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 — NO KINGS SEATTLE -->
+  <div class="gallery-outer" id="nokings1">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="nokings1" data-title="No Kings Seattle">
+        <img src="images/nokings1/BJ3C7408.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C7496.jpg" width="2500" height="1667" alt="" />
+        <img src="images/nokings1/BJ3C7611.jpg" width="2500" height="1667" alt="" />
+        <img src="images/nokings1/BJ3C7687.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C7699.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C7814.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C7885.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C7952.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C7966.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C7986.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C8008.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C8130.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C8151.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C8175.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C8242.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C8319.jpg" width="2500" height="3750" alt="" />
+        <img src="images/nokings1/BJ3C8487.jpg" width="2500" height="3750" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">02</span>
+        <div class="info-divider"></div>
+        <span class="info-title">No Kings Seattle</span>
+        <span class="info-meta">Seattle, WA</span>
+        <span class="info-counter" id="counter-nokings1">1 — 17</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-nokings1"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 — STUDENT RALLY -->
+  <div class="gallery-outer" id="student-rally">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="student-rally" data-title="Student Rally">
+        <img src="images/Student Rally Seattle City Hall/IMG_4736.jpg" width="2500" height="1667" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C6964.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7009.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7040.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7169.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7308.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7380.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7424.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7529.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7551.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7617.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7645.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/BJ3C7707.jpg" width="2500" height="3750" alt="" />
+        <img src="images/Student Rally Seattle City Hall/IMG_4709.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">03</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Student Rally</span>
+        <span class="info-meta">Feb 5, 2026 · Seattle City Hall</span>
+        <span class="info-counter" id="counter-student-rally">1 — 14</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-student-rally"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 — ICE OUT NOW -->
+  <div class="gallery-outer" id="iceoutnow">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="iceoutnow" data-title="ICE Out Now">
+        <img src="images/iceoutnow/BJ3C6430.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C6460.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iceoutnow/BJ3C6479.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C6549.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C6812-Enhanced-NR.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C6821-Enhanced-NR.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C6864-Enhanced-NR.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C6903-Enhanced-NR.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C6966-Enhanced-NR.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C6986-Enhanced-NR.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iceoutnow/BJ3C7139-Enhanced-NR.jpg" width="2500" height="3750" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">04</span>
+        <div class="info-divider"></div>
+        <span class="info-title">ICE Out Now</span>
+        <span class="info-meta">Seattle, WA</span>
+        <span class="info-counter" id="counter-iceoutnow">1 — 11</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-iceoutnow"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05 — ICE OUT — FEDERAL BUILDING -->
+  <div class="gallery-outer" id="iceout-federal">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="iceout-federal" data-title="ICE Out — Federal Building">
+        <img src="images/IceOutFederalBuilding/BJ3C6291-2.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6301.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6322.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6329.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6370.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6386.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6416.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6442.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6516.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/BJ3C6581.jpg" width="2500" height="3750" alt="" />
+        <img src="images/IceOutFederalBuilding/IMG_4620-2.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">05</span>
+        <div class="info-divider"></div>
+        <span class="info-title">ICE Out — Federal Building</span>
+        <span class="info-meta">Seattle, WA</span>
+        <span class="info-counter" id="counter-iceout-federal">1 — 11</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-iceout-federal"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 06 — MINNEAPOLIS ICE OUT MASS PROTEST -->
+  <div class="gallery-outer" id="mn-protest">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="mn-protest" data-title="Minneapolis ICE OUT Mass Protest">
+        <img src="images/MnProtest/BJ3C4883.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C4972.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5016.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5099.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5151.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5168.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5255.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5418.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5563.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5611.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5678.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5687.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5784.jpg" width="2500" height="1667" alt="" />
+        <img src="images/MnProtest/BJ3C5841.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C5953.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/BJ3C6202.jpg" width="2500" height="1667" alt="" />
+        <img src="images/MnProtest/IMG_4368.jpg" width="2500" height="1667" alt="" />
+        <img src="images/MnProtest/IMG_4451.jpg" width="2500" height="1667" alt="" />
+        <img src="images/MnProtest/IMG_4489.jpg" width="2500" height="1667" alt="" />
+        <img src="images/MnProtest/IMG_4508.jpg" width="2500" height="1667" alt="" />
+        <img src="images/MnProtest/IMG_4542.jpg" width="2500" height="3750" alt="" />
+        <img src="images/MnProtest/IMG_4583.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">06</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Minneapolis ICE OUT Mass Protest</span>
+        <span class="info-meta">Minneapolis, MN</span>
+        <span class="info-counter" id="counter-mn-protest">1 — 22</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-mn-protest"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 07 — GREG BOVINO -->
+  <div class="gallery-outer" id="bovino">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="bovino" data-title="Greg Bovino">
+        <img src="images/bovino/BJ3C4051.jpg" width="2500" height="3750" alt="" />
+        <img src="images/bovino/BJ3C4199.jpg" width="2500" height="1667" alt="" />
+        <img src="images/bovino/BJ3C4550.jpg" width="2500" height="3750" alt="" />
+        <img src="images/bovino/BJ3C4553.jpg" width="2500" height="3750" alt="" />
+        <img src="images/bovino/BJ3C4620.jpg" width="2500" height="3750" alt="" />
+        <img src="images/bovino/BJ3C4742.jpg" width="2500" height="3750" alt="" />
+        <img src="images/bovino/IMG_3827.jpg" width="2500" height="1667" alt="" />
+        <img src="images/bovino/IMG_3942.jpg" width="2500" height="1667" alt="" />
+        <img src="images/bovino/IMG_4108.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">07</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Greg Bovino</span>
+        <span class="info-meta"></span>
+        <span class="info-counter" id="counter-bovino">1 — 9</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-bovino"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 — JAKE LANG -->
+  <div class="gallery-outer" id="jake-lang">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="jake-lang" data-title="Jake Lang">
+        <img src="images/jakelang/BJ3C1455.jpg" width="2500" height="3750" alt="" />
+        <img src="images/jakelang/BJ3C1463.jpg" width="2500" height="3750" alt="" />
+        <img src="images/jakelang/BJ3C1487.jpg" width="2500" height="3750" alt="" />
+        <img src="images/jakelang/BJ3C1633.jpg" width="2500" height="3750" alt="" />
+        <img src="images/jakelang/BJ3C1826.jpg" width="2500" height="1667" alt="" />
+        <img src="images/jakelang/BJ3C1930.jpg" width="2500" height="1667" alt="" />
+        <img src="images/jakelang/BJ3C1987.jpg" width="2500" height="1667" alt="" />
+        <img src="images/jakelang/BJ3C2419.jpg" width="2500" height="3750" alt="" />
+        <img src="images/jakelang/BJ3C2495.jpg" width="2500" height="3750" alt="" />
+        <img src="images/jakelang/BJ3C2653.jpg" width="2500" height="1667" alt="" />
+        <img src="images/jakelang/BJ3C2761.jpg" width="2500" height="1667" alt="" />
+        <img src="images/jakelang/BJ3C2768.jpg" width="2500" height="1667" alt="" />
+        <img src="images/jakelang/BJ3C2858.jpg" width="2500" height="3750" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">08</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Jake Lang</span>
+        <span class="info-meta"></span>
+        <span class="info-counter" id="counter-jake-lang">1 — 13</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-jake-lang"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 — 2025 -->
+  <div class="gallery-outer" id="2025">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="2025" data-title="2025">
+        <img src="images/2025/BJ3C6986-Enhanced-NR2.png" width="2160" height="3240" alt="" />
+        <img src="images/2025/BJ3C6479.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C9497.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C6296.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C6430.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C6650.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C6812.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C7193.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C9300.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C9972.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C9850.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C8497.jpg" width="2500" height="3750" alt="" />
+        <img src="images/2025/BJ3C8242.jpg" width="2500" height="3750" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">09</span>
+        <div class="info-divider"></div>
+        <span class="info-title">2025</span>
+        <span class="info-meta">2025</span>
+        <span class="info-counter" id="counter-2025">1 — 13</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-2025"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 — HANDMAIDS -->
+  <div class="gallery-outer" id="handmaids">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="handmaids" data-title="Handmaids">
+        <img src="images/handmaids/BJ3C5974.jpg" width="2500" height="3750" alt="" />
+        <img src="images/handmaids/BJ3C6028.jpg" width="2500" height="3750" alt="" />
+        <img src="images/handmaids/BJ3C6177.jpg" width="2500" height="3750" alt="" />
+        <img src="images/handmaids/BJ3C6195.jpg" width="2500" height="1667" alt="" />
+        <img src="images/handmaids/BJ3C6203.jpg" width="2149" height="3223" alt="" />
+        <img src="images/handmaids/BJ3C6138.jpg" width="2500" height="3750" alt="" />
+        <img src="images/handmaids/BJ3C6162.jpg" width="2500" height="3750" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">10</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Handmaids</span>
+        <span class="info-meta">Seattle, WA</span>
+        <span class="info-counter" id="counter-handmaids">1 — 7</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-handmaids"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 — GEORGE FLOYD PROTESTS -->
+  <div class="gallery-outer" id="george-floyd-protests">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="george-floyd-protests" data-title="George Floyd Protests">
+        <img src="images/george-floyd-protests/IMG_5886.jpg" width="2500" height="1667" alt="" />
+        <img src="images/george-floyd-protests/IMG_5856.jpg" width="2500" height="1667" alt="" />
+        <img src="images/george-floyd-protests/IMG_5778.jpg" width="2500" height="3750" alt="" />
+        <img src="images/george-floyd-protests/IMG_5805.jpg" width="2500" height="1667" alt="" />
+        <img src="images/george-floyd-protests/IMG_5810.jpg" width="2500" height="3750" alt="" />
+        <img src="images/george-floyd-protests/IMG_5838.jpg" width="2500" height="1666" alt="" />
+        <img src="images/george-floyd-protests/IMG_5875.jpg" width="2500" height="1667" alt="" />
+        <img src="images/george-floyd-protests/IMG_5917.jpg" width="2500" height="1667" alt="" />
+        <img src="images/george-floyd-protests/IMG_5940.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">11</span>
+        <div class="info-divider"></div>
+        <span class="info-title">George Floyd Protests</span>
+        <span class="info-meta">Summer 2020 · Seattle, WA</span>
+        <span class="info-counter" id="counter-george-floyd-protests">1 — 9</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-george-floyd-protests"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 — WOMEN'S MARCH ON D.C. -->
+  <div class="gallery-outer" id="womens-march-on-dc">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="womens-march-on-dc" data-title="Women's March on D.C.">
+        <img src="images/womens-march-on-dc/IMG_4705.jpg" width="2500" height="1406" alt="" />
+        <img src="images/womens-march-on-dc/IMG_4790.jpg" width="2500" height="1407" alt="" />
+        <img src="images/womens-march-on-dc/IMG_4322.jpg" width="2386" height="3577" alt="" />
+        <img src="images/womens-march-on-dc/IMG_4536.jpg" width="2500" height="1667" alt="" />
+        <img src="images/womens-march-on-dc/IMG_4776.jpg" width="2405" height="3607" alt="" />
+        <img src="images/womens-march-on-dc/IMG_4351.jpg" width="2500" height="1667" alt="" />
+        <img src="images/womens-march-on-dc/IMG_4640.jpg" width="2500" height="3750" alt="" />
+        <img src="images/womens-march-on-dc/IMG_4669.jpg" width="2500" height="1667" alt="" />
+        <img src="images/womens-march-on-dc/IMG_4754.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">12</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Women's March on D.C.</span>
+        <span class="info-meta">Jan 21, 2017 · Washington, D.C.</span>
+        <span class="info-counter" id="counter-womens-march-on-dc">1 — 9</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-womens-march-on-dc"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 02 — INAUGURATION DAY -->
+  <div class="gallery-outer" id="inaugertion-day">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="inaugertion-day" data-title="Inauguration Day">
+        <img src="images/inaugertion-day/IMG_3809.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_3869.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_3844.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_3806.JPG" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_3877.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_3893.jpg" width="2500" height="3750" alt="" />
+        <img src="images/inaugertion-day/IMG_3903.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_3938.jpg" width="2500" height="3750" alt="" />
+        <img src="images/inaugertion-day/IMG_4016.jpg" width="2500" height="3750" alt="" />
+        <img src="images/inaugertion-day/IMG_4065.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_4081.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_4147.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_4152.jpg" width="2500" height="1667" alt="" />
+        <img src="images/inaugertion-day/IMG_4179.jpg" width="2500" height="3750" alt="" />
+        <img src="images/inaugertion-day/IMG_4234.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">13</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Inauguration Day</span>
+        <span class="info-meta">Jan 20, 2017 · Washington, D.C.</span>
+        <span class="info-counter" id="counter-inaugertion-day">1 — 15</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-inaugertion-day"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 03 — MUSLIM BAN — SEATAC -->
+  <div class="gallery-outer" id="muslim-ban-protest">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="muslim-ban-protest" data-title="Muslim Ban Protest — SeaTac Airport">
+        <img src="images/muslim-ban-protest/IMG_5056.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest/IMG_4967.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest/IMG_4915.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest/IMG_4989.jpg" width="2500" height="3750" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5064.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5077.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5084.jpg" width="2500" height="3750" alt="" />
+        <img src="images/muslim-ban-protest/IMG_4906.jpg" width="2500" height="1406" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5107.jpg" width="2500" height="3750" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5165.jpg" width="2500" height="3750" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5205.jpg" width="2500" height="3750" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5244.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5058.jpg" width="2500" height="3750" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5074.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest/IMG_5214.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">14</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Muslim Ban Protest — SeaTac Airport</span>
+        <span class="info-meta">Jan 29, 2017 · Seattle-Tacoma Airport</span>
+        <span class="info-counter" id="counter-muslim-ban-protest">1 — 15</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-muslim-ban-protest"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04 — MUSLIM BAN — WESTLAKE -->
+  <div class="gallery-outer" id="muslim-ban-protest-westlake-center">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="muslim-ban-protest-westlake-center" data-title="Muslim Ban Protest — Westlake Center">
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5461.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5472.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5358.jpg" width="2500" height="1406" alt="" />
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5331.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5357.jpg" width="2500" height="1406" alt="" />
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5387.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5420.jpg" width="2500" height="1406" alt="" />
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5600.jpg" width="2500" height="1667" alt="" />
+        <img src="images/muslim-ban-protest-westlake-center/IMG_5623.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">15</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Muslim Ban Protest — Westlake Center</span>
+        <span class="info-meta">Feb 2017 · Seattle, WA</span>
+        <span class="info-counter" id="counter-muslim-ban-protest-westlake-center">1 — 9</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-muslim-ban-protest-westlake-center"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 08 — OCCUPY WALL STREET -->
+  <div class="gallery-outer" id="occupy-wall-street">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="occupy-wall-street" data-title="Occupy Wall Street">
+        <img src="images/occupy-wall-street/6276806650_027f7bb861_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/occupy-wall-street/6269201693_aef89741df_o.jpg" width="2500" height="3750" alt="" />
+        <img src="images/occupy-wall-street/6290767406_1c82d57a4e_o.jpg" width="2428" height="3642" alt="" />
+        <img src="images/occupy-wall-street/6273142998_ff2ca4f401_o.jpg" width="2500" height="3750" alt="" />
+        <img src="images/occupy-wall-street/6290246211_1412d142e1_o.jpg" width="2500" height="3750" alt="" />
+        <img src="images/occupy-wall-street/6290245685_ffb2c3a3de_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/occupy-wall-street/6273149064_8f869d0742_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/occupy-wall-street/6273143462_decce1b2b4_o.jpg" width="2500" height="3750" alt="" />
+        <img src="images/occupy-wall-street/6290246961_6fe5eecf2b_o.jpg" width="2500" height="1666" alt="" />
+        <img src="images/occupy-wall-street/6290246685_93ab842abf_o.jpg" width="2500" height="3750" alt="" />
+        <img src="images/occupy-wall-street/6273156532_e38c6aabef_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/occupy-wall-street/6290764720_4cf8745635_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/occupy-wall-street/6269731184_30b45f40bb_o.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">16</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Occupy Wall Street</span>
+        <span class="info-meta">Fall 2011 · New York City</span>
+        <span class="info-counter" id="counter-occupy-wall-street">1 — 13</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-occupy-wall-street"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 09 — DNC 2008 -->
+  <div class="gallery-outer" id="dnc-2008">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="dnc-2008" data-title="DNC 2008">
+        <img src="images/dnc-2008/2846728724_6cf97a1f9b_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2805949536_26f16d0536_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2805098851_a19d225c8d_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2805098917_358ba2c7f5_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2846729088_70ff958f8b_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2845894427_3aca2a347b_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2846728820_88f5c16d15_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2845894709_bf883385a8_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2845895067_06700cdcb2_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2846729012_d3aa512c7c_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2846729180_85d90e75ee_o.jpg" width="1000" height="1500" alt="" />
+        <img src="images/dnc-2008/2846729466_6655305519_o.jpg" width="1500" height="1000" alt="" />
+        <img src="images/dnc-2008/2846729278_63ba1a8079_o.jpg" width="1500" height="1000" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">17</span>
+        <div class="info-divider"></div>
+        <span class="info-title">DNC 2008</span>
+        <span class="info-meta">August 2008 · Denver, CO</span>
+        <span class="info-counter" id="counter-dnc-2008">1 — 13</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-dnc-2008"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 10 — IRAQ -->
+  <div class="gallery-outer" id="iraq">
+    <div class="gallery-sticky">
+      <div class="gallery-track" data-gallery="iraq" data-title="Iraq">
+        <img src="images/iraq/2242821174_bbf6a6c266_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iraq/2238287503_c1aa81cc60_o.jpg" width="960" height="640" alt="" />
+        <img src="images/iraq/2234513962_ce25009673_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iraq/2242027765_80b600fca6_o.jpg" width="2500" height="1666" alt="" />
+        <img src="images/iraq/2242016731_7ca82d4b19_o.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iraq/2249658270_9258879045_o.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iraq/2242827708_6e77779128_o.jpg" width="2500" height="3750" alt="" />
+        <img src="images/iraq/2248858707_618793e7a4_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iraq/2249654334_9feef56e48_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iraq/2248860913_a6696fa48f_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iraq/2249655268_207ccefa45_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iraq/2249657334_fdf663843e_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iraq/2249655426_5ae8c0acaf_o.jpg" width="2500" height="1667" alt="" />
+        <img src="images/iraq/2249657566_4b18127af4_o.jpg" width="2500" height="1667" alt="" />
+      </div>
+      <div class="gallery-info">
+        <span class="info-num">18</span>
+        <div class="info-divider"></div>
+        <span class="info-title">Iraq</span>
+        <span class="info-meta">2008</span>
+        <span class="info-counter" id="counter-iraq">1 — 14</span>
+        <div class="info-progress"><div class="info-progress-bar" id="prog-iraq"></div></div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <span class="footer-logo">Rojastopher</span>
+    <span>Documentary Photography &mdash; 2008&ndash;2025</span>
+    <a href="about.html">About the Photographer</a>
+  </footer>
+
+</div><!-- /main -->
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button id="lbClose" aria-label="Close">&times;</button>
+  <button class="lb-btn" id="lbPrev">&#8249;</button>
+  <img id="lbImg" src="" alt="" />
+  <button class="lb-btn" id="lbNext">&#8250;</button>
+  <div class="lb-info" id="lbInfo"></div>
+</div>
+
+<script>
+  // ── CONSTANTS ───────────────────────────────────────────────────
+  const INFO_H   = 68;
+  const GAP      = 3;
+
+  function sidebarW() {
+    return window.innerWidth > 768 ? 220 : 0;
+  }
+
+  function photoH() {
+    return window.innerHeight - INFO_H;
+  }
+
+  function computeTrackWidth(track) {
+    const ph = photoH();
+    let total = 0;
+    const imgs = track.querySelectorAll('img');
+    imgs.forEach((img, i) => {
+      const nw = parseInt(img.getAttribute('width'));
+      const nh = parseInt(img.getAttribute('height'));
+      total += ph * (nw / nh);
+      if (i < imgs.length - 1) total += GAP;
+    });
+    return total;
+  }
+
+  // ── GALLERY STATE ────────────────────────────────────────────────
+  const galleries = [];
+
+  document.querySelectorAll('.gallery-outer').forEach(outer => {
+    const id      = outer.id;
+    const sticky  = outer.querySelector('.gallery-sticky');
+    const track   = outer.querySelector('.gallery-track');
+    const progBar = document.getElementById('prog-' + id);
+    const counter = document.getElementById('counter-' + id);
+    const numImgs = track.querySelectorAll('img').length;
+
+    function setHeight() {
+      const tw   = computeTrackWidth(track);
+      const vw   = window.innerWidth - sidebarW();
+      const maxT = Math.max(0, tw - vw);
+      outer.style.height = (window.innerHeight + maxT) + 'px';
+      outer._maxT = maxT;
+    }
+
+    setHeight();
+    window.addEventListener('resize', setHeight);
+
+    // Attach lightbox clicks
+    const imgEls  = track.querySelectorAll('img');
+    const title   = track.dataset.title;
+    const imgSrcs = Array.from(imgEls).map(i => i.src);
+
+    imgEls.forEach((img, idx) => {
+      img.addEventListener('click', () => openLightbox(imgSrcs, idx, title));
+      if (img.complete) img.classList.add('loaded');
+      else img.addEventListener('load', () => img.classList.add('loaded'));
+    });
+
+    galleries.push({ outer, track, progBar, counter, numImgs });
+  });
+
+  // ── SCROLL DRIVEN HORIZONTAL PAN ────────────────────────────────
+  let rafPending = false;
+
+  window.addEventListener('scroll', () => {
+    if (!rafPending) {
+      rafPending = true;
+      requestAnimationFrame(updateGalleries);
+    }
+  }, { passive: true });
+
+  function updateGalleries() {
+    rafPending = false;
+    const sy = window.scrollY;
+    const vh = window.innerHeight;
+
+    galleries.forEach(({ outer, track, progBar, counter, numImgs }) => {
+      const maxT = outer._maxT || 0;
+      const top  = outer.offsetTop;
+      const scrollRange = outer.offsetHeight - vh;
+
+      const scrolled = sy - top;
+
+      let ratio;
+      if (scrolled <= 0)              ratio = 0;
+      else if (scrolled >= scrollRange) ratio = 1;
+      else                             ratio = scrolled / scrollRange;
+
+      track.style.transform = `translateX(-${ratio * maxT}px)`;
+
+      if (progBar) progBar.style.width = (ratio * 100) + '%';
+
+      if (counter) {
+        const photoNum = Math.min(numImgs, Math.floor(ratio * numImgs) + 1);
+        counter.textContent = photoNum + ' \u2014 ' + numImgs;
+      }
+    });
+  }
+
+  updateGalleries(); // initial pass
+
+  // ── SIDEBAR ACTIVE LINK ──────────────────────────────────────────
+  const navLinks = document.querySelectorAll('.sidebar-nav a[data-section]');
+
+  const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        navLinks.forEach(a => {
+          a.classList.toggle('active', a.dataset.section === e.target.id);
+        });
+      }
+    });
+  }, { threshold: 0.3 });
+
+  document.querySelectorAll('.gallery-outer[id]').forEach(s => sectionObserver.observe(s));
+
+  // Mobile nav scroll indicator
+  const navEl = document.getElementById('sidebarNav');
+  if (navEl) {
+    function checkNavOverflow() {
+      const ul = navEl.querySelector('ul');
+      if (!ul) return;
+      const overflowing = ul.scrollWidth > navEl.clientWidth + 4;
+      // handled by CSS fade via ::after if needed
+    }
+    navEl.addEventListener('scroll', checkNavOverflow, { passive: true });
+    window.addEventListener('resize', checkNavOverflow);
+  }
+
+  // ── HERO SLIDESHOW ───────────────────────────────────────────────
+  const heroImages = [
+    'images/freepalestine/BJ3C9148.jpg',
+    'images/nokings1/BJ3C7408.jpg',
+    'images/Student Rally Seattle City Hall/IMG_4736.jpg',
+    'images/iceoutnow/BJ3C6430.jpg',
+    'images/IceOutFederalBuilding/BJ3C6291-2.jpg',
+    'images/MnProtest/BJ3C4883.jpg',
+    'images/bovino/BJ3C4051.jpg',
+    'images/jakelang/BJ3C1455.jpg',
+    'images/2025/BJ3C6986-Enhanced-NR2.png',
+    'images/handmaids/BJ3C6195.jpg',
+    'images/george-floyd-protests/IMG_5886.jpg',
+    'images/womens-march-on-dc/IMG_4790.jpg',
+    'images/inaugertion-day/IMG_4081.jpg',
+    'images/muslim-ban-protest/IMG_4906.jpg',
+    'images/muslim-ban-protest-westlake-center/IMG_5357.jpg',
+    'images/occupy-wall-street/6290246961_6fe5eecf2b_o.jpg',
+    'images/dnc-2008/2846728724_6cf97a1f9b_o.jpg',
+    'images/iraq/2249654334_9feef56e48_o.jpg',
+  ];
+
+  const slidesEl = document.getElementById('heroSlides');
+  const dotsEl   = document.getElementById('heroDots');
+  let current = 0, heroTimer;
+
+  heroImages.forEach((src, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'hero-slide' + (i === 0 ? ' active' : '');
+    slide.style.backgroundImage = `url('${src}')`;
+    slidesEl.appendChild(slide);
+
+    const dot = document.createElement('button');
+    dot.className = 'hero-dot' + (i === 0 ? ' active' : '');
+    dot.setAttribute('aria-label', 'Slide ' + (i + 1));
+    dot.addEventListener('click', () => goTo(i));
+    dotsEl.appendChild(dot);
+  });
+
+  function goTo(n) {
+    const slides = slidesEl.querySelectorAll('.hero-slide');
+    const dots   = dotsEl.querySelectorAll('.hero-dot');
+    slides[current].classList.remove('active');
+    dots[current].classList.remove('active');
+    current = ((n % heroImages.length) + heroImages.length) % heroImages.length;
+    slides[current].classList.add('active');
+    dots[current].classList.add('active');
+    clearInterval(heroTimer);
+    heroTimer = setInterval(() => goTo(current + 1), 5500);
+  }
+
+  heroTimer = setInterval(() => goTo(current + 1), 5500);
+
+  // ── LIGHTBOX ─────────────────────────────────────────────────────
+  let lbImgs = [], lbIdx = 0;
+
+  function openLightbox(imgs, idx, title) {
+    lbImgs = imgs;
+    lbIdx  = idx;
+    showLb(title);
+    document.getElementById('lightbox').classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+
+  function showLb(titleOverride) {
+    const img = document.getElementById('lbImg');
+    img.style.opacity = '0';
+    img.src = lbImgs[lbIdx];
+    img.onload = () => { img.style.transition = 'opacity 0.3s'; img.style.opacity = '1'; };
+    document.getElementById('lbInfo').textContent = (lbIdx + 1) + ' / ' + lbImgs.length;
+  }
+
+  function closeLb() {
+    document.getElementById('lightbox').classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.getElementById('lbClose').addEventListener('click', closeLb);
+  document.getElementById('lightbox').addEventListener('click', e => { if (e.target === e.currentTarget) closeLb(); });
+
+  document.getElementById('lbImg').addEventListener('mousemove', e => {
+    e.currentTarget.style.cursor = e.clientX < window.innerWidth / 2 ? 'w-resize' : 'e-resize';
+  });
+
+  document.getElementById('lbImg').addEventListener('click', e => {
+    if (e.clientX < window.innerWidth / 2) {
+      lbIdx = (lbIdx - 1 + lbImgs.length) % lbImgs.length;
+    } else {
+      lbIdx = (lbIdx + 1) % lbImgs.length;
+    }
+    showLb();
+  });
+
+  document.getElementById('lbPrev').addEventListener('click', () => {
+    lbIdx = (lbIdx - 1 + lbImgs.length) % lbImgs.length;
+    showLb();
+  });
+
+  document.getElementById('lbNext').addEventListener('click', () => {
+    lbIdx = (lbIdx + 1) % lbImgs.length;
+    showLb();
+  });
+
+  document.addEventListener('keydown', e => {
+    if (!document.getElementById('lightbox').classList.contains('open')) return;
+    if (e.key === 'Escape')     closeLb();
+    if (e.key === 'ArrowLeft')  { lbIdx = (lbIdx - 1 + lbImgs.length) % lbImgs.length; showLb(); }
+    if (e.key === 'ArrowRight') { lbIdx = (lbIdx + 1) % lbImgs.length; showLb(); }
+  });
+
+  // Touch swipe on lightbox
+  let tx0 = 0;
+  const lbEl = document.getElementById('lightbox');
+  lbEl.addEventListener('touchstart', e => { tx0 = e.touches[0].clientX; }, { passive: true });
+  lbEl.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - tx0;
+    if (Math.abs(dx) > 50) {
+      lbIdx = dx < 0
+        ? (lbIdx + 1) % lbImgs.length
+        : (lbIdx - 1 + lbImgs.length) % lbImgs.length;
+      showLb();
+    }
+  });
+</script>
+</body>
+</html>

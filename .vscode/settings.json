@@ -7,5 +7,6 @@
           "activityBar.activeFocusBorder":"#7ce8b5",
         "statusBar.background": "#7ce8b5",
         "statusBar.foreground":"#000000",
+        
     }
 }

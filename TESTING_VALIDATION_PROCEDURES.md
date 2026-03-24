@@ -1,4 +1,4 @@
-# Testing and Validation Procedures: Chronological Gallery Reordering
+e # Testing and Validation Procedures: Chronological Gallery Reordering
 
 **Project:** Rojastopher Photography Website  
 **Task:** Reorder galleries chronologically (newest to oldest)  
