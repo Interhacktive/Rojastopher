@@ -678,23 +678,23 @@ const GALLERIES = [
     ]
   },
   {
-    id: 'inaugertion-day', title: 'Inauguration Day',
+    id: 'inauguration-day', title: 'Inauguration Day',
     images: [
-      { src: 'images/inaugertion-day/IMG_3903.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_3869.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_3809.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_3806.JPG', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_3844.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_3877.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_3893.jpg', w: 2500, h: 3750 },
-      { src: 'images/inaugertion-day/IMG_3938.jpg', w: 2500, h: 3750 },
-      { src: 'images/inaugertion-day/IMG_4016.jpg', w: 2500, h: 3750 },
-      { src: 'images/inaugertion-day/IMG_4065.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_4081.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_4147.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_4152.jpg', w: 2500, h: 1667 },
-      { src: 'images/inaugertion-day/IMG_4179.jpg', w: 2500, h: 3750 },
-      { src: 'images/inaugertion-day/IMG_4234.jpg', w: 2500, h: 1667 },
+      { src: 'images/inauguration-day/IMG_3903.jpg', w: 2500, h: 1667 },
+      { src: 'images/inauguration-day/IMG_3869.jpg', w: 2500, h: 1667 },
+      { src: 'images/inauguration-day/IMG_3809.jpg', w: 2500, h: 1667 },
+      { src: 'images/inauguration-day/IMG_3806.JPG', w: 2500, h: 1667 },
+      { src: 'images/inauguration-day/IMG_3844.jpg', w: 2500, h: 1667 },
+      { src: 'images/inauguration-day/IMG_3877.jpg', w: 2500, h: 1667 },
+      { src: 'images/inauguration-day/IMG_3893.jpg', w: 2500, h: 3750 },
+      { src: 'images/inauguration-day/IMG_3938.jpg', w: 2500, h: 3750 },
+      { src: 'images/inauguration-day/IMG_4016.jpg', w: 2500, h: 3750 },
+      { src: 'images/inauguration-day/IMG_9004.jpg', w: 2048, h: 1365 },
+      { src: 'images/inauguration-day/IMG_8993.jpg', w: 1365, h: 2048 },
+      { src: 'images/inauguration-day/IMG_8925.jpg', w: 2048, h: 1365 },
+      { src: 'images/inauguration-day/BJ3C5951.jpg', w: 2048, h: 1365 },
+      { src: 'images/inauguration-day/BJ3C5914.jpg', w: 1365, h: 2048 },
+      { src: 'images/inauguration-day/BJ3C5723.jpg', w: 2048, h: 1365 },
     ]
   },
   {
@@ -773,8 +773,18 @@ GALLERIES.forEach(g => {
 });
 
 // Album order & deletion
-let albumOrder    = GALLERIES.map(g => g.id);
-const origOrder   = GALLERIES.map(g => g.id);
+let albumOrder    = [
+  'student-rally', 'iceout-federal', 'mn-protest', 'iceoutnow',
+  'bovino', 'jake-lang', 'handmaids', 'freepalestine', 'nokings1',
+  'marchonwashington', 'j25', 'george-floyd-protests', 'muslim-ban-protest',
+  'womens-march-on-dc', 'inauguration-day', 'occupy-wall-street', 'dnc-2008', 'iraq'
+];
+const origOrder   = [
+  'student-rally', 'iceout-federal', 'mn-protest', 'iceoutnow',
+  'bovino', 'jake-lang', 'handmaids', 'freepalestine', 'nokings1',
+  'marchonwashington', 'j25', 'george-floyd-protests', 'muslim-ban-protest',
+  'womens-march-on-dc', 'inauguration-day', 'occupy-wall-street', 'dnc-2008', 'iraq'
+];
 const deletedAlbums = new Set();
 
 let activeId       = null;
