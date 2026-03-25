@@ -208,7 +208,7 @@
       font-family: var(--font-serif);
       font-style: italic;
       font-weight: normal;
-      font-size: clamp(44px, 6vw, 80px);
+      font-size: clamp(44px, 4.5vw, 120px);
       line-height: 1.05;
       color: #fff;
       max-width: 600px;
@@ -475,6 +475,67 @@
       .info-meta { display: none; }
       .lb-btn { font-size: 28px; padding: 16px 18px; }
     }
+
+    /* ── TABLET (iPad Air/Pro portrait, small desktop) ──────────── */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      :root { --sidebar-w: 180px; }
+      .sidebar-logo span { display: none; }
+      .sidebar-footer { display: none; }
+      .sidebar-nav a { font-size: 10px; padding: 12px 16px; }
+    }
+
+    /* ── PHONE LANDSCAPE (iPhone 12/13/14 landscape = ~844–932px wide, ~390–430px tall) ── */
+    @media (orientation: landscape) and (max-height: 500px) {
+      :root { --sidebar-w: 0px; }
+      .sidebar {
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        align-items: center;
+        border-right: none;
+        border-bottom: 1px solid var(--border);
+      }
+      .sidebar-logo {
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+        padding: 10px 16px;
+        flex-shrink: 0;
+      }
+      .sidebar-logo span { display: none; }
+      .sidebar-logo a { font-size: 16px; }
+      .sidebar-nav {
+        flex: 1;
+        overflow-x: auto;
+        overflow-y: hidden;
+        display: flex;
+        padding: 0;
+        min-width: 0;
+      }
+      .sidebar-nav a {
+        padding: 0 12px;
+        height: 44px;
+        border-left: none;
+        border-bottom: 2px solid transparent;
+        flex-shrink: 0;
+        font-size: 10px;
+      }
+      .sidebar-nav a.active { border-bottom-color: var(--accent); border-left-color: transparent; }
+      .sidebar-nav .nav-num { display: none; }
+      .sidebar-footer { display: none; }
+      .main { margin-left: 0; padding-top: 44px; }
+      .hero { height: calc(100vh - 44px); }
+      .hero-title { font-size: clamp(28px, 5vh, 48px); }
+      .hero-content { left: 20px; right: 20px; }
+      .gallery-info { padding: 0 14px; }
+    }
+
+    /* ── LARGE SCREEN / 4K (2560px+) ───────────────────────────── */
+    @media (min-width: 2560px) {
+      :root { --sidebar-w: 300px; }
+      .sidebar-logo a { font-size: 20px; }
+      .sidebar-nav a { font-size: 13px; padding: 16px 24px; }
+      .sidebar-footer { font-size: 11px; padding: 24px; }
+    }
   </style>
 </head>
 <body>
@@ -486,7 +547,7 @@
     <span>Documentary Photography</span>
   </div>
   <nav class="sidebar-nav" id="sidebarNav">
-    <ul><li><a href="#student-rally" data-section="student-rally"><span class="nav-num">01</span>Student Rally</a></li><li><a href="#iceout-federal" data-section="iceout-federal"><span class="nav-num">02</span>ICE Out — Federal Building</a></li><li><a href="#mn-protest" data-section="mn-protest"><span class="nav-num">03</span>Minneapolis ICE OUT</a></li><li><a href="#iceoutnow" data-section="iceoutnow"><span class="nav-num">04</span>ICE Out Now</a></li><li><a href="#bovino" data-section="bovino"><span class="nav-num">05</span>Greg Bovino</a></li><li><a href="#jake-lang" data-section="jake-lang"><span class="nav-num">06</span>Jake Lang</a></li><li><a href="#handmaids" data-section="handmaids"><span class="nav-num">07</span>Handmaids</a></li><li><a href="#freepalestine" data-section="freepalestine"><span class="nav-num">08</span>Free Palestine</a></li><li><a href="#nokings1" data-section="nokings1"><span class="nav-num">09</span>No Kings Seattle</a></li><li><a href="#marchonwashington" data-section="marchonwashington"><span class="nav-num">10</span>March on Washington</a></li><li><a href="#j25" data-section="j25"><span class="nav-num">11</span>J25</a></li><li><a href="#george-floyd-protests" data-section="george-floyd-protests"><span class="nav-num">12</span>George Floyd Protests</a></li><li><a href="#muslim-ban-protest" data-section="muslim-ban-protest"><span class="nav-num">13</span>Muslim Ban — SeaTac Airport</a></li><li><a href="#womens-march-on-dc" data-section="womens-march-on-dc"><span class="nav-num">14</span>Women's March on D.C.</a></li><li><a href="#inauguration-day" data-section="inauguration-day"><span class="nav-num">15</span>Inauguration Day</a></li><li><a href="#occupy-wall-street" data-section="occupy-wall-street"><span class="nav-num">16</span>Occupy Wall Street</a></li><li><a href="#dnc-2008" data-section="dnc-2008"><span class="nav-num">17</span>DNC 2008</a></li><li><a href="#iraq" data-section="iraq"><span class="nav-num">18</span>Iraq</a></li></ul>
+    <ul><li><a href="#student-rally" data-section="student-rally"><span class="nav-num">01</span>Student Rally</a></li><li><a href="#iceout-federal" data-section="iceout-federal"><span class="nav-num">02</span>ICE Out — Federal Building</a></li><li><a href="#mn-protest" data-section="mn-protest"><span class="nav-num">03</span>Minneapolis ICE OUT Mass Protest</a></li><li><a href="#iceoutnow" data-section="iceoutnow"><span class="nav-num">04</span>ICE Out Now</a></li><li><a href="#bovino" data-section="bovino"><span class="nav-num">05</span>Greg Bovino</a></li><li><a href="#jake-lang" data-section="jake-lang"><span class="nav-num">06</span>Jake Lang</a></li><li><a href="#handmaids" data-section="handmaids"><span class="nav-num">07</span>Handmaids</a></li><li><a href="#freepalestine" data-section="freepalestine"><span class="nav-num">08</span>Free Palestine</a></li><li><a href="#nokings1" data-section="nokings1"><span class="nav-num">09</span>No Kings Seattle</a></li><li><a href="#marchonwashington" data-section="marchonwashington"><span class="nav-num">10</span>March on Washington</a></li><li><a href="#j25" data-section="j25"><span class="nav-num">11</span>J25</a></li><li><a href="#george-floyd-protests" data-section="george-floyd-protests"><span class="nav-num">12</span>George Floyd Protests</a></li><li><a href="#muslim-ban-protest" data-section="muslim-ban-protest"><span class="nav-num">13</span>Muslim Ban Protest — SeaTac Airport</a></li><li><a href="#womens-march-on-dc" data-section="womens-march-on-dc"><span class="nav-num">14</span>Women's March on D.C.</a></li><li><a href="#inauguration-day" data-section="inauguration-day"><span class="nav-num">15</span>Inauguration Day</a></li><li><a href="#occupy-wall-street" data-section="occupy-wall-street"><span class="nav-num">16</span>Occupy Wall Street</a></li><li><a href="#dnc-2008" data-section="dnc-2008"><span class="nav-num">17</span>DNC 2008</a></li><li><a href="#iraq" data-section="iraq"><span class="nav-num">18</span>Iraq</a></li></ul>
   </nav>
   <div class="sidebar-footer">
     <a href="about.html">About the Photographer</a>
@@ -648,7 +709,7 @@
         
         
       
-      <img src="images/MnProtest/IMG_4368.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/BJ3C5255.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5418.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5016.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C4883.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C4972.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5099.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5168.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5563.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5611.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5678.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5687.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5953.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5784.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/BJ3C5841.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/IMG_4451.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/IMG_4489.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/IMG_4508.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/BJ3C5151.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C6202.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/IMG_4542.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/IMG_4583.jpg" width="2500" height="1667" alt=""></div>
+      <img src="images/MnProtest/BJ3C5255.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/IMG_4368.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/BJ3C4883.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5016.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C4972.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5099.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5418.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5168.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5563.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5611.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5678.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5687.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5953.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C5784.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/BJ3C5841.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/IMG_4451.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/IMG_4489.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/IMG_4508.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/BJ3C5151.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/BJ3C6202.jpg" width="2500" height="1667" alt=""><img src="images/MnProtest/IMG_4542.jpg" width="2500" height="3750" alt=""><img src="images/MnProtest/IMG_4583.jpg" width="2500" height="1667" alt=""></div>
       <div class="gallery-info">
         <span class="info-num">03</span>
         <div class="info-divider"></div>
@@ -673,7 +734,7 @@
         
         
       
-      <img src="images/iceoutnow/BJ3C6460.jpg" width="2500" height="1667" alt=""><img src="images/iceoutnow/BJ3C6986-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6479.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6430.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6549.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6812-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6821-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6864-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6903-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6966-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C7139-Enhanced-NR.jpg" width="2500" height="3750" alt=""></div>
+      <img src="images/iceoutnow/BJ3C6986-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6460.jpg" width="2500" height="1667" alt=""><img src="images/iceoutnow/BJ3C6430.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6479.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6549.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6812-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6821-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6864-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6903-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C6966-Enhanced-NR.jpg" width="2500" height="3750" alt=""><img src="images/iceoutnow/BJ3C7139-Enhanced-NR.jpg" width="2500" height="3750" alt=""></div>
       <div class="gallery-info">
         <span class="info-num">04</span>
         <div class="info-divider"></div>
@@ -696,7 +757,7 @@
         
         
       
-      <img src="images/bovino/IMG_4108.jpg" width="2500" height="1667" alt=""><img src="images/bovino/BJ3C4620.jpg" width="2500" height="3750" alt=""><img src="images/bovino/IMG_3942.jpg" width="2500" height="1667" alt=""><img src="images/bovino/BJ3C4051.jpg" width="2500" height="3750" alt=""><img src="images/bovino/BJ3C4199.jpg" width="2500" height="1667" alt=""><img src="images/bovino/BJ3C4550.jpg" width="2500" height="3750" alt=""><img src="images/bovino/IMG_3827.jpg" width="2500" height="1667" alt=""><img src="images/bovino/BJ3C4742.jpg" width="2500" height="3750" alt=""><img src="images/bovino/BJ3C4553.jpg" width="2500" height="3750" alt=""></div>
+      <img src="images/bovino/BJ3C4620.jpg" width="2500" height="3750" alt=""><img src="images/bovino/IMG_3942.jpg" width="2500" height="1667" alt=""><img src="images/bovino/IMG_4108.jpg" width="2500" height="1667" alt=""><img src="images/bovino/BJ3C4051.jpg" width="2500" height="3750" alt=""><img src="images/bovino/BJ3C4199.jpg" width="2500" height="1667" alt=""><img src="images/bovino/BJ3C4550.jpg" width="2500" height="3750" alt=""><img src="images/bovino/IMG_3827.jpg" width="2500" height="1667" alt=""><img src="images/bovino/BJ3C4742.jpg" width="2500" height="3750" alt=""><img src="images/bovino/BJ3C4553.jpg" width="2500" height="3750" alt=""></div>
       <div class="gallery-info">
         <span class="info-num">05</span>
         <div class="info-divider"></div>
@@ -723,7 +784,7 @@
         
         
       
-      <img src="images/jakelang/BJ3C1826.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C2419.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C1987.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C2495.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C2653.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C1455.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C1463.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C1633.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C1930.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C2858.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C2768.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C1487.jpg" width="2500" height="3750" alt=""></div>
+      <img src="images/jakelang/BJ3C2419.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C1987.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C2495.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C2653.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C1455.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C1826.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C1463.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C1633.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C1930.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C1487.jpg" width="2500" height="3750" alt=""><img src="images/jakelang/BJ3C2768.jpg" width="2500" height="1667" alt=""><img src="images/jakelang/BJ3C2858.jpg" width="2500" height="3750" alt=""></div>
       <div class="gallery-info">
         <span class="info-num">06</span>
         <div class="info-divider"></div>
@@ -744,7 +805,7 @@
         
         
       
-      <img src="images/handmaids/BJ3C6195.jpg" width="2500" height="1667" alt=""><img src="images/handmaids/BJ3C5974.jpg" width="2500" height="3750" alt=""><img src="images/handmaids/BJ3C6028.jpg" width="2500" height="3750" alt=""><img src="images/handmaids/BJ3C6177.jpg" width="2500" height="3750" alt=""><img src="images/handmaids/BJ3C6203.jpg" width="2149" height="3223" alt=""><img src="images/handmaids/BJ3C6138.jpg" width="2500" height="3750" alt=""><img src="images/handmaids/BJ3C6162.jpg" width="2500" height="3750" alt=""></div>
+      <img src="images/handmaids/BJ3C5974.jpg" width="2500" height="3750" alt=""><img src="images/handmaids/BJ3C6195.jpg" width="2500" height="1667" alt=""><img src="images/handmaids/BJ3C6028.jpg" width="2500" height="3750" alt=""><img src="images/handmaids/BJ3C6177.jpg" width="2500" height="3750" alt=""><img src="images/handmaids/BJ3C6203.jpg" width="2149" height="3223" alt=""><img src="images/handmaids/BJ3C6138.jpg" width="2500" height="3750" alt=""><img src="images/handmaids/BJ3C6162.jpg" width="2500" height="3750" alt=""></div>
       <div class="gallery-info">
         <span class="info-num">07</span>
         <div class="info-divider"></div>
@@ -796,7 +857,7 @@
         
         
       
-      <img src="images/nokings1/BJ3C7611.jpg" width="2500" height="1667" alt=""><img src="images/nokings1/BJ3C7986.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8319.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7687.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7952.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7966.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8242.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7408.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7814.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8008.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7885.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7699.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8130.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8151.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8175.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7496.jpg" width="2500" height="1667" alt=""><img src="images/nokings1/BJ3C8487.jpg" width="2500" height="3750" alt=""></div>
+      <img src="images/nokings1/BJ3C7986.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7611.jpg" width="2500" height="1667" alt=""><img src="images/nokings1/BJ3C8319.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7687.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7952.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7966.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8242.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7408.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7814.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8008.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7885.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7699.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8130.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8151.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C8175.jpg" width="2500" height="3750" alt=""><img src="images/nokings1/BJ3C7496.jpg" width="2500" height="1667" alt=""><img src="images/nokings1/BJ3C8487.jpg" width="2500" height="3750" alt=""></div>
       <div class="gallery-info">
         <span class="info-num">09</span>
         <div class="info-divider"></div>
@@ -953,7 +1014,7 @@
         
         
       
-      <img src="images/occupy-wall-street/6276806650_027f7bb861_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/occupywallstreet_6273145406_o.jpg" width="2912" height="4368" alt=""><img src="images/occupy-wall-street/6269201693_aef89741df_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6290767406_1c82d57a4e_o.jpg" width="2428" height="3642" alt=""><img src="images/occupy-wall-street/6273149064_8f869d0742_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/6290246211_1412d142e1_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6290245685_ffb2c3a3de_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/6273142998_ff2ca4f401_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6273143462_decce1b2b4_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6290246961_6fe5eecf2b_o.jpg" width="2500" height="1666" alt=""><img src="images/occupy-wall-street/6290246685_93ab842abf_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6273156532_e38c6aabef_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/6290764720_4cf8745635_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/occupywallstreet_6272615463_o.jpg" width="4368" height="2912" alt=""><img src="images/occupy-wall-street/occupywallstreet_6272643611_o.jpg" width="2912" height="4368" alt=""><img src="images/occupy-wall-street/occupywallstreet_6276288421_o.jpg" width="4368" height="2912" alt=""><img src="images/occupy-wall-street/6269731184_30b45f40bb_o.jpg" width="2500" height="1667" alt=""></div>
+      <img src="images/occupy-wall-street/occupywallstreet_6273145406_o.jpg" width="2912" height="4368" alt=""><img src="images/occupy-wall-street/6276806650_027f7bb861_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/6269201693_aef89741df_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6290767406_1c82d57a4e_o.jpg" width="2428" height="3642" alt=""><img src="images/occupy-wall-street/6273149064_8f869d0742_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/6290246211_1412d142e1_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6290245685_ffb2c3a3de_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/6273142998_ff2ca4f401_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6273143462_decce1b2b4_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6290246961_6fe5eecf2b_o.jpg" width="2500" height="1666" alt=""><img src="images/occupy-wall-street/6290246685_93ab842abf_o.jpg" width="2500" height="3750" alt=""><img src="images/occupy-wall-street/6273156532_e38c6aabef_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/6290764720_4cf8745635_o.jpg" width="2500" height="1667" alt=""><img src="images/occupy-wall-street/occupywallstreet_6272615463_o.jpg" width="4368" height="2912" alt=""><img src="images/occupy-wall-street/occupywallstreet_6272643611_o.jpg" width="2912" height="4368" alt=""><img src="images/occupy-wall-street/occupywallstreet_6276288421_o.jpg" width="4368" height="2912" alt=""><img src="images/occupy-wall-street/6269731184_30b45f40bb_o.jpg" width="2500" height="1667" alt=""></div>
       <div class="gallery-info">
         <span class="info-num">16</span>
         <div class="info-divider"></div>
@@ -1054,10 +1115,24 @@
 
   // ── REORDER GALLERY SECTIONS TO MATCH TIMELINE ──────────────────
   const galleryOrder = [
-    'student-rally', 'iceout-federal', 'mn-protest', 'iceoutnow',
-    'bovino', 'jake-lang', 'handmaids', 'freepalestine', 'nokings1',
-    'marchonwashington', 'j25', 'george-floyd-protests', 'muslim-ban-protest',
-    'womens-march-on-dc', 'inauguration-day', 'occupy-wall-street', 'dnc-2008', 'iraq'
+    'student-rally',
+    'iceout-federal',
+    'mn-protest',
+    'iceoutnow',
+    'bovino',
+    'jake-lang',
+    'handmaids',
+    'freepalestine',
+    'nokings1',
+    'marchonwashington',
+    'j25',
+    'george-floyd-protests',
+    'muslim-ban-protest',
+    'womens-march-on-dc',
+    'inauguration-day',
+    'occupy-wall-street',
+    'dnc-2008',
+    'iraq'
   ];
   const mainEl = document.querySelector('.main');
   const footerEl = mainEl.querySelector('footer');
@@ -1206,7 +1281,7 @@
 
   // ── HERO SLIDESHOW ───────────────────────────────────────────────
   const heroImages = [
-    'images/Student Rally Seattle City Hall/IMG_4736.jpg',
+    'images/Student Rally Seattle City Hall/BJ3C7380.jpg',
     'images/IceOutFederalBuilding/BJ3C6386.jpg',
     'images/MnProtest/IMG_4368.jpg',
     'images/iceoutnow/BJ3C6460.jpg',
@@ -1221,7 +1296,7 @@
     'images/muslim-ban-protest/IMG_5056.jpg',
     'images/womens-march-on-dc/IMG_4754.jpg',
     'images/inauguration-day/IMG_3903.jpg',
-    'images/occupy-wall-street/6276806650_027f7bb861_o.jpg',
+    'images/occupy-wall-street/6273149064_8f869d0742_o.jpg',
     'images/dnc-2008/2846729012_d3aa512c7c_o.jpg',
     'images/iraq/2242821174_bbf6a6c266_o.jpg',
   ];
